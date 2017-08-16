@@ -85,13 +85,14 @@ const fruit = [
   "Watermelon"
 ];
 
-function AutoCompleteWithFilters({ items, onChange, label }) {
+function AutoCompleteWithFilters({ items, onChange, label, onUpdateInput }) {
   return (
     <AutoComplete
       floatingLabelText={label}
       filter={AutoComplete.fuzzyFilter}
       dataSource={fruit}
       maxSearchResults={5}
+      onUpdateInput={onUpdateInput}
     />
   );
 }
