@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import bg from "../img/bg.jpg";
+import PrimaryButton from "./PrimaryButton";
 
 const Wrapper = styled.div`
   position: relative;
@@ -19,6 +20,7 @@ const Img = styled.img`
   left: 0;
   width: 100%;
   max-width: 100%;
+  height: 100%;
   @media screen and (min-width: 1156px) {
     height: 450px;
   }
@@ -39,19 +41,6 @@ const Headline = styled.div`
 `;
 
 const Paragraph = styled.p`letter-spacing: 3px;`;
-const Button = styled.button`
-  cursor: pointer;
-  padding: 15px 25px;
-  border-radius: 3px;
-  font-weight: bold;
-  font-size: 20px;
-  letter-spacing: 3px;
-  color: white;
-  background: ${props => props.theme.blue};
-  :hover {
-    background: #2c3e50;
-  }
-`;
 
 const Hero = props => {
   return (
@@ -60,7 +49,7 @@ const Hero = props => {
       <Content>
         <Headline>Find a Route</Headline>
         <Paragraph>You say where, we show how</Paragraph>
-        <Button>TRY IT</Button>
+        <PrimaryButton>TRY IT</PrimaryButton>
       </Content>
     </Wrapper>
   );
