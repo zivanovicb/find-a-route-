@@ -1,5 +1,56 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+}
+
+body,
+html {
+  overflow-x: hidden;
+}
+
+*:focus,
+*:active {
+  outline: none;
+}
+
+* {
+  transition: all 0.1s ease-in-out;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+  color: #4285f4;
+  transition: 0.1s ease-in-out;
+}
+a.btn {
+  color: white;
+}
+
+ul {
+  display: block;
+}
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+}
+
+.container {
+  width: 1156px;
+  margin: 0 auto;
+}
+
+button {
+  border: none;
 }
