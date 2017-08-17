@@ -1,6 +1,6 @@
 .example-enter {
   opacity: 0.01;
-  transform: translate(-100px);
+  transform: translate(100px);
 }
 
 .example-enter.example-enter-active {
@@ -11,11 +11,13 @@
 
 .example-leave {
   opacity: 1;
+  transform: translateX(0);
 }
 
 .example-leave.example-leave-active {
   opacity: 0.01;
-  transition: opacity 300ms ease-in;
+  transition: all .1s ease-out;
+  transform: translateX(-100px);
 }
 
 .headline-enter {

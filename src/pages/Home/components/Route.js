@@ -11,7 +11,7 @@ const RouteWrapper = styled.div`
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
-  padding: 13px 22px;
+  padding: 22px;
   background: ${props => props.theme.darkViolet};
   border-radius: 5px;
   color: ${props => props.theme.grey};
@@ -92,6 +92,7 @@ const RouteText = styled.div`
 const RouteDate = styled.p`
   font-size: 0.8em;
   font-weight: 400;
+  margin: 10px 0 0 0;
 `;
 
 const RouteCta = styled.div`
