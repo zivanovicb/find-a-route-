@@ -80,6 +80,8 @@ export default class App extends Component {
             transitionName="headline"
             transitionAppear={true}
             transitionAppearTimeout={500}
+            transitionEnterTimeout={0}
+            transitionLeaveTimeout={0}
           >
             <Headline>Where would you love to arrive?</Headline>
           </CSSTransitionGroup>
@@ -92,7 +94,7 @@ export default class App extends Component {
                 transitionLeaveTimeout={0}
               >
                 <Headline color={theme.darkViolet} key="1">
-                  You haven't entered any routes yet. Please do so!
+                  You haven't entered any routes yet
                 </Headline>
               </CSSTransitionGroup>
             : <Headline color={theme.darkViolet} key="2">

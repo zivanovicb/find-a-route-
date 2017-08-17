@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import makeDateString from "../../../helpers/dateString";
 
 import PrimaryButton from "./PrimaryButton";
 import LocationHr from "./LocationHr";
@@ -57,11 +58,15 @@ export default class LocationPickers extends Component {
       let uuidv1 = require("uuid/v1");
       uuidv1(); // ⇨ '985123a0-7e4f-11e7-9022-fb7190c856e4'
 
+      let date = new Date();
+      // Geting date in text
+      let d = makeDateString(date);
+
       let newRoute = {
         id: uuidv1(),
         startingPointValue,
         destinationPointValue,
-        date: "Today 20:30"
+        date: d
       };
 
       this.props.addRoute(newRoute);

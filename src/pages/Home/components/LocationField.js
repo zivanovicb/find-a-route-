@@ -44,7 +44,6 @@ export default class LocationField extends Component {
   render() {
     const { items } = this.state;
     const { label, error, errorText } = this.props;
-    console.log(error);
     return (
       <AutoComplete
         label={label}

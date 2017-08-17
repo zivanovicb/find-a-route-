@@ -39,7 +39,7 @@ const renderRoutes = (routes, deleteRoute) => {
         id={item.id}
         startingPoint={item.startingPointValue}
         destinationPoint={item.destinationPointValue}
-        timeAdded="Today, 20:30"
+        timeAdded={item.date}
         handleDelete={deleteRoute}
       />
     );
