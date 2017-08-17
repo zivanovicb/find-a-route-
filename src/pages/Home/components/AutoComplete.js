@@ -12,6 +12,7 @@ function AutoCompleteWithFilters({ items, onChange, label, onUpdateInput }) {
       dataSource={arr}
       maxSearchResults={5}
       onUpdateInput={onUpdateInput}
+      fullWidth
     />
   );
 }

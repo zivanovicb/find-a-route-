@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import styled, { css } from "styled-components";
 import LocationHr from "./LocationHr";
 import theme from "../../../theme";
@@ -112,48 +112,55 @@ const RouteInfo = styled.div`
 `;
 
 // svg signature: icon, fill, hoverFill, width, height, style
-const Route = ({ id, startingPoint, destinationPoint, timeAdded }) => {
-  return (
-    <RouteWrapper>
-      <RouteInfo>
-        <RouteText>
-          <span>
-            {startingPoint.description}
-          </span>
-          <LocationHr
-            emptyDotStyle={{
-              background: theme.blue,
-              border: `1px solid ${theme.blue}`
-            }}
-            fullDotStyle={{
-              background: theme.blue
-            }}
-            className="mobileColumn mobileVisible"
-            childMargin="0 5px"
-            dotsNum="1"
-          />
-          <Svg
-            className="desktopVisible"
-            icon="arrow"
-            width="30px"
-            height="10px"
-            style={{ alignSelf: "center", marginRight: "0" }}
-          />
-          <span>
-            {destinationPoint.description}
-          </span>
-        </RouteText>
-        <RouteDate>
-          {timeAdded}
-        </RouteDate>
-      </RouteInfo>
-      <RouteCta>
-        <DetailsButton href={`/route/` + id}>DETAILS</DetailsButton>
-        <DeleteButton>DELETE</DeleteButton>
-      </RouteCta>
-    </RouteWrapper>
-  );
-};
+class Route extends Component {
+  handleDelete = () => {
+    // updating App.js state
+    this.props.handleDelete(this.props.id);
+  };
+  render() {
+    const { id, startingPoint, destinationPoint, timeAdded } = this.props;
+    return (
+      <RouteWrapper>
+        <RouteInfo>
+          <RouteText>
+            <span>
+              {startingPoint.description}
+            </span>
+            <LocationHr
+              emptyDotStyle={{
+                background: theme.blue,
+                border: `1px solid ${theme.blue}`
+              }}
+              fullDotStyle={{
+                background: theme.blue
+              }}
+              className="mobileColumn mobileVisible"
+              childMargin="0 5px"
+              dotsNum="1"
+            />
+            <Svg
+              className="desktopVisible"
+              icon="arrow"
+              width="30px"
+              height="10px"
+              style={{ alignSelf: "center", marginRight: "0" }}
+            />
+            <span>
+              {destinationPoint.description}
+            </span>
+          </RouteText>
+          <RouteDate>
+            {timeAdded}
+          </RouteDate>
+        </RouteInfo>
+        <RouteCta>
+          <DetailsButton href={`/route/` + id}>DETAILS</DetailsButton>
+          <DeleteButton onClick={this.handleDelete}>DELETE</DeleteButton>
+        </RouteCta>
+      </RouteWrapper>
+    );
+  }
+}
 
 Route.propTypes = {
   id: PropTypes.string.isRequired,

@@ -3,6 +3,9 @@ import styled from "styled-components";
 import LocationPickers from "./LocationPickers";
 import theme from "../../../theme";
 import Routes from "./Routes";
+import { CSSTransitionGroup } from "react-transition-group"; // ES6
+import "./transitions.css";
+
 const uuidv4 = require("uuid/v4");
 
 const Wrapper = styled.div`margin-top: 50px;`;
@@ -19,11 +22,12 @@ const Container = styled.div`
 
 const Headline = styled.h2`
   color: ${props => (props.color ? props.color : props.theme.cohesiveBlue)};
-  font-size: 1.7em;
+  font-size: 2em;
   margin: 50px 0 15px 0;
   text-align: ${props => (props.textAlign ? props.textAlign : "left")};
 `;
 
+//
 export default class App extends Component {
   state = {
     routes: JSON.parse(localStorage.getItem("routes")) || []
@@ -41,6 +45,29 @@ export default class App extends Component {
       }
     );
   };
+
+  deleteRoute = id => {
+    const { routes } = this.state;
+
+    let copyArr = routes;
+    let index = routes.findIndex(o => {
+      return o.id === id;
+    });
+
+    // if we find the obj in state, as we should
+    // and we can instantly change localStorage
+    if (index != -1) {
+      copyArr.splice(index, 1);
+      this.setState({ routes: copyArr }, () => {
+        console.log("natural state ", this.state, routes);
+        localStorage.setItem("routes", JSON.stringify(copyArr));
+        console.log(
+          "local storage",
+          JSON.parse(localStorage.getItem("routes"))
+        );
+      });
+    }
+  };
   render() {
     const { routes } = this.state;
     return (
@@ -48,8 +75,21 @@ export default class App extends Component {
         <Container>
           <Headline>Where would you love to arrive?</Headline>
           <LocationPickers addRoute={this.addRoute} />
-          <Headline color={theme.darkViolet}>Routes</Headline>
-          <Routes routes={routes} />
+          {this.state.routes.length === 0
+            ? <CSSTransitionGroup
+                transitionName="headline"
+                transitionEnterTimeout={400}
+                transitionLeaveTimeout={0}
+              >
+                <Headline color={theme.darkViolet} key="1">
+                  You haven't entered any routes yet. Please do so!
+                </Headline>
+              </CSSTransitionGroup>
+            : <Headline color={theme.darkViolet} key="2">
+                Your routes
+              </Headline>}
+
+          <Routes deleteRoute={this.deleteRoute} routes={routes} />
         </Container>
       </Wrapper>
     );

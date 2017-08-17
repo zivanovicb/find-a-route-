@@ -17,11 +17,15 @@ const Wrapper = styled.div`
 `;
 
 const Button = PrimaryButton.extend`
+  flex: 1 28%;
   position: relative;
   top: 5px;
   font-size: 1rem;
   font-weight: 400;
   letter-spacing: 0;
+  @media screen and (min-width: 960px) {
+    margin-left: 15px;
+  }
 `;
 
 export default class LocationPickers extends Component {
@@ -63,7 +67,6 @@ export default class LocationPickers extends Component {
     }
   };
   render() {
-    console.log("its render", this.state.routes);
     return (
       <Wrapper>
         <LocationField
