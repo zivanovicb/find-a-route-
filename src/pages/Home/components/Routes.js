@@ -11,7 +11,6 @@ const Wrapper = styled.div`
 `;
 
 const Routes = ({ routes, deleteRoute }) => {
-  console.log("routes", deleteRoute);
   // injecting cb for each route
   const items = renderRoutes(routes, deleteRoute);
   return (
@@ -33,7 +32,6 @@ Routes.propTypes = {
 
 // Route signature: (startingPoint:obj, destinationPoint:obj, timeAdded:str)
 const renderRoutes = (routes, deleteRoute) => {
-  console.log("rendering routes", deleteRoute);
   return routes.map((item, i) => {
     return (
       <Route

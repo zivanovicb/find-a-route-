@@ -1,7 +1,8 @@
-import React from "react";
+import React, { Component } from "react";
 import styled from "styled-components";
 import bg from "../img/bg.jpg";
 import PrimaryButton from "./PrimaryButton";
+import { Motion, spring, presets } from "react-motion";
 
 const Wrapper = styled.div`
   position: relative;
@@ -9,7 +10,7 @@ const Wrapper = styled.div`
   align-items: center;
   width: 100%;
   min-width: 100%;
-  height: 450px;
+  height: 600px;
   overflow: hidden;
 `;
 
@@ -22,7 +23,7 @@ const Img = styled.img`
   max-width: 100%;
   height: 100%;
   @media screen and (min-width: 1156px) {
-    height: 450px;
+    height: 600px;
   }
 `;
 
@@ -42,17 +43,47 @@ const Headline = styled.div`
 
 const Paragraph = styled.p`letter-spacing: 3px;`;
 
-const Hero = props => {
-  return (
-    <Wrapper>
-      <Img src={bg} alt="hero" />
-      <Content>
-        <Headline>Find a Route</Headline>
-        <Paragraph>You say where, we show how</Paragraph>
-        <PrimaryButton>TRY IT</PrimaryButton>
-      </Content>
-    </Wrapper>
-  );
-};
+const DarkBlueContainer = styled.div`
+  width: 2000px;
+  height: 600px;
+  background: #2b3b67;
+`;
+class DarkBlue extends Component {
+  shouldComponentUpdate() {
+    return false;
+  }
+  render() {
+    console.log("rendered");
+    const { style } = this.props;
+    return <DarkBlueContainer style={style} />;
+  }
+}
+class Hero extends Component {
+  state = {
+    startAnimation: false
+  };
+  constructor(props) {
+    super(props);
+    setTimeout(() => {
+      this.setState({ startAnimation: true });
+    }, 500);
+  }
+  render() {
+    const { startAnimation } = this.state;
 
+    return (
+      <Wrapper>
+        <Img src={bg} alt="hero" />
+        {renderContent()}
+      </Wrapper>
+    );
+  }
+}
+
+const renderContent = () =>
+  <Content>
+    <Headline>Find a Route</Headline>
+    <Paragraph>You say where, we show how</Paragraph>
+    <PrimaryButton>TRY IT</PrimaryButton>
+  </Content>;
 export default Hero;

@@ -1,0 +1,53 @@
+.example-enter {
+  opacity: 0.01;
+  transform: translate(-100px);
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all .1s ease-out;
+}
+
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+
+.headline-enter {
+  opacity: 0.01;
+  transform: translate(150px);
+}
+
+.headline-enter.headline-enter-active {
+  opacity: 1;
+  transform: translateX(0px);
+  transition: all .25s ease-in-out;
+}
+
+.headline-leave {
+  opacity: 1;
+}
+
+.headline-leave.headline-leave-active {
+  transform: translate(-150px, 0);
+  opacity: 0.01;
+  transition: all .25s ease-out;
+}
+
+/* where would you appaer? */
+
+.headline-appear {
+  opacity: 0.01;
+  transform: translate(0, -50px);
+}
+
+.headline-appear.headline-appear-active {
+  opacity: 1;
+  transform: translate(0, 0px);
+  transition: transform .2s ease-in, opacity .6s ease-in-out;
+}

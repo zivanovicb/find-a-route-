@@ -6,6 +6,9 @@ const LocationHr = styled.div`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  @media screen and (min-width: 960px) {
+    margin: 0 20px;
+  }
   &.mobileColumn {
     @media screen and (max-width: 960px) {
       align-self: start;

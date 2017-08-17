@@ -9,7 +9,7 @@ var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 
 const BASE_URL = "http://localhost:3000";
-export default class StartingPoint extends Component {
+export default class LocationField extends Component {
   state = {
     value: "",
     placeId: "",
@@ -43,18 +43,21 @@ export default class StartingPoint extends Component {
 
   render() {
     const { items } = this.state;
-    const { label } = this.props;
+    const { label, error, errorText } = this.props;
+    console.log(error);
     return (
       <AutoComplete
         label={label}
         items={items}
         onUpdateInput={this.onUpdateInput}
+        error={error}
+        errorText={errorText}
       />
     );
   }
 }
 
-// whole place object is sent to parent
+// whole place object is sent back to parent
 function updateParent(items, value, cb) {
   let obj = items.filter(item => {
     return item.description === value;

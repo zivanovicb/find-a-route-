@@ -31,8 +31,11 @@ const Button = PrimaryButton.extend`
 export default class LocationPickers extends Component {
   state = {
     startingPointValue: null,
-    destinationPointValue: null
+    destinationPointValue: null,
+    startingPointError: false,
+    destinationPointError: false
   };
+
   componentWillMount() {
     this.setState({
       routes: JSON.parse(localStorage.getItem("routes"))
@@ -62,31 +65,50 @@ export default class LocationPickers extends Component {
       };
 
       this.props.addRoute(newRoute);
+      this.setState({
+        startingPointError: false,
+        destinationPointError: false
+      });
+
+      // we check for errors only when user tries to get route(clicks on button)
     } else {
-      alert("ne idemo");
+      const { startingPointValue, destinationPointValue } = this.state;
+      if (!startingPointValue) this.setState({ startingPointError: true });
+
+      if (!destinationPointValue)
+        this.setState({
+          destinationPointError: true
+        });
     }
   };
   render() {
+    const { startingPointError, destinationPointError } = this.state;
     return (
-      <Wrapper>
-        <LocationField
-          updateValue={this.updateStartingPoint}
-          label="Choose starting point"
-        />
-        <LocationHr
-          style={{
-            position: "relative",
-            top: "15px"
-          }}
-          dotsNum="3"
-          childMargin="0 0 0 9px"
-        />
-        <LocationField
-          updateValue={this.updateDestinationPoint}
-          label="Choose destination"
-        />
-        <Button onClick={this.handleAdd}>Add route</Button>
-      </Wrapper>
+      <div>
+        <Wrapper>
+          <LocationField
+            updateValue={this.updateStartingPoint}
+            label="Choose starting point"
+            error={startingPointError}
+            errorText="Please type in your starting point"
+          />
+          <LocationHr
+            style={{
+              position: "relative",
+              top: "15px"
+            }}
+            dotsNum="3"
+            childMargin="0 0 0 9px"
+          />
+          <LocationField
+            updateValue={this.updateDestinationPoint}
+            label="Choose destination"
+            error={destinationPointError}
+            errorText="Please type in your ending point"
+          />
+          <Button onClick={this.handleAdd}>Add route</Button>
+        </Wrapper>
+      </div>
     );
   }
 }

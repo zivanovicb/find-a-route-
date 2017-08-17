@@ -16,7 +16,6 @@ html {
 }
 
 * {
-  transition: all 0.1s ease-in-out;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -54,4 +53,9 @@ h4 {
 button {
   border: none;
   cursor: pointer;
+}
+
+a,
+button {
+  transition: all 0.1s ease-in-out;
 }

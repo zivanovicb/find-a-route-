@@ -25,6 +25,9 @@ const Headline = styled.h2`
   font-size: 2em;
   margin: 50px 0 15px 0;
   text-align: ${props => (props.textAlign ? props.textAlign : "left")};
+  @media screen and (min-width: 960px) {
+    font-size: 2.6em;
+  }
 `;
 
 //
@@ -73,7 +76,14 @@ export default class App extends Component {
     return (
       <Wrapper>
         <Container>
-          <Headline>Where would you love to arrive?</Headline>
+          <CSSTransitionGroup
+            transitionName="headline"
+            transitionAppear={true}
+            transitionAppearTimeout={500}
+          >
+            <Headline>Where would you love to arrive?</Headline>
+          </CSSTransitionGroup>
+
           <LocationPickers addRoute={this.addRoute} />
           {this.state.routes.length === 0
             ? <CSSTransitionGroup
