@@ -44,7 +44,7 @@ const DeleteButton = styled.button`
   }
 `;
 
-const RouteText = styled.p`
+const RouteText = styled.div`
   display: flex;
   font-size: 0.93em;
   letter-spacing: 1.5px;

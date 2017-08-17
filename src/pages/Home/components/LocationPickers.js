@@ -4,8 +4,7 @@ import styled from "styled-components";
 import PrimaryButton from "./PrimaryButton";
 import LocationHr from "./LocationHr";
 
-import StartingPoint from "./StartingPoint";
-import DestinationPoint from "./DestinationPoint";
+import LocationField from "./LocationField";
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,21 +26,46 @@ const Button = PrimaryButton.extend`
 
 export default class LocationPickers extends Component {
   state = {
-    startingPointValue: "",
-    destinationPointValue: ""
+    startingPointValue: null,
+    destinationPointValue: null
   };
+  componentWillMount() {
+    this.setState({
+      routes: JSON.parse(localStorage.getItem("routes"))
+    });
+  }
   updateStartingPoint = startingPointValue =>
     this.setState({ startingPointValue });
   updateDestinationPoint = destinationPointValue =>
     this.setState({ destinationPointValue });
 
-  componentDidUpdate() {
-    console.log(this.state);
-  }
+  handleAdd = () => {
+    const { startingPointValue, destinationPointValue } = this.state;
+    if (
+      startingPointValue &&
+      destinationPointValue &&
+      (typeof startingPointValue === "object" &&
+        typeof destinationPointValue === "object")
+    ) {
+      let newRoute = {
+        startingPointValue,
+        destinationPointValue,
+        date: "Today 20:30"
+      };
+
+      this.props.addRoute(newRoute);
+    } else {
+      alert("ne idemo");
+    }
+  };
   render() {
+    console.log("its render", this.state.routes);
     return (
       <Wrapper>
-        <StartingPoint updateValue={this.updateStartingPoint} />
+        <LocationField
+          updateValue={this.updateStartingPoint}
+          label="Choose starting point"
+        />
         <LocationHr
           style={{
             position: "relative",
@@ -50,8 +74,11 @@ export default class LocationPickers extends Component {
           dotsNum="3"
           childMargin="0 0 0 9px"
         />
-        <DestinationPoint updateValue={this.updateDestinationPoint} />
-        <Button>Add route</Button>
+        <LocationField
+          updateValue={this.updateDestinationPoint}
+          label="Choose destination"
+        />
+        <Button onClick={this.handleAdd}>Add route</Button>
       </Wrapper>
     );
   }
