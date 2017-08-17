@@ -47,6 +47,8 @@ export default class LocationPickers extends Component {
             position: "relative",
             top: "15px"
           }}
+          dotsNum="3"
+          childMargin="0 0 0 9px"
         />
         <DestinationPoint updateValue={this.updateDestinationPoint} />
         <Button>Add route</Button>
