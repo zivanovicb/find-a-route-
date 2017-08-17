@@ -35,7 +35,7 @@ app.get("/api/autocomplete/", function(req, res) {
       url: "https://maps.googleapis.com/maps/api/place/autocomplete/json",
       method: "GET",
       params: {
-        key: "AIzaSyCBYe5yfMHYGGJcss7dAUqPmVUgamIY3ec",
+        key: config.mapsAPI_KEY,
         input: query
       }
     })

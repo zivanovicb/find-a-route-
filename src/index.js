@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
 import Home from "./pages/Home/Home";
+import Details from "./pages/Details/Details";
 
 const Routing = () =>
   <Router>
@@ -17,6 +18,10 @@ const Routing = () =>
         <MuiThemeProvider>
           <Route exact path="/" component={Home} />
         </MuiThemeProvider>
+      </ThemeProvider>
+
+      <ThemeProvider theme={theme}>
+        <Route exact path="/details" component={Details} />
       </ThemeProvider>
     </div>
   </Router>;
