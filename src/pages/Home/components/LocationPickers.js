@@ -47,7 +47,11 @@ export default class LocationPickers extends Component {
       (typeof startingPointValue === "object" &&
         typeof destinationPointValue === "object")
     ) {
+      let uuidv1 = require("uuid/v1");
+      uuidv1(); // ⇨ '985123a0-7e4f-11e7-9022-fb7190c856e4'
+
       let newRoute = {
+        id: uuidv1(),
         startingPointValue,
         destinationPointValue,
         date: "Today 20:30"

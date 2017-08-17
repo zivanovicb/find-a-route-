@@ -21,7 +21,7 @@ const Routing = () =>
       </ThemeProvider>
 
       <ThemeProvider theme={theme}>
-        <Route exact path="/details" component={Details} />
+        <Route exact path="/route/:id" component={Details} />
       </ThemeProvider>
     </div>
   </Router>;

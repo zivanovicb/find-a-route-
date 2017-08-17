@@ -3,6 +3,7 @@ import styled from "styled-components";
 import LocationPickers from "./LocationPickers";
 import theme from "../../../theme";
 import Routes from "./Routes";
+const uuidv4 = require("uuid/v4");
 
 const Wrapper = styled.div`margin-top: 50px;`;
 const Container = styled.div`
@@ -36,7 +37,7 @@ export default class App extends Component {
         };
       },
       () => {
-        localStorage.setItem("routes", JSON.stringify(routes));
+        localStorage.setItem("routes", JSON.stringify(this.state.routes));
       }
     );
   };

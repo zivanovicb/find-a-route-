@@ -2,6 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import LocationHr from "./LocationHr";
 import theme from "../../../theme";
+import PropTypes from "prop-types";
 
 const RouteWrapper = styled.div`
   cursor: pointer;
@@ -14,6 +15,7 @@ const RouteWrapper = styled.div`
   border-radius: 5px;
   color: ${props => props.theme.grey};
   font-size: 1.1rem;
+  margin-bottom: 10px;
 `;
 
 const Button = css`
@@ -46,7 +48,7 @@ const DeleteButton = styled.button`
 
 const RouteText = styled.div`
   display: flex;
-  font-size: 0.93em;
+  font-size: 0.8em;
   letter-spacing: 1.5px;
   font-weight: bold;
   span {
@@ -95,37 +97,44 @@ const RouteInfo = styled.div`
   flex: 1;
   margin-left: 10px;
 `;
-const Route = ({ startingPoint, destinationPoint, timeAdded }) =>
-  <RouteWrapper>
-    <RouteInfo>
-      <RouteText>
-        <span>
-          {startingPoint}
-        </span>
-        <LocationHr
-          emptyDotStyle={{
-            background: theme.blue,
-            border: `1px solid ${theme.blue}`
-          }}
-          fullDotStyle={{
-            background: theme.blue
-          }}
-          className="mobileColumn"
-          childMargin="0 5px"
-          dotsNum="1"
-        />
-        <span>
-          {destinationPoint}
-        </span>
-      </RouteText>
-      <RouteDate>
-        {timeAdded}
-      </RouteDate>
-    </RouteInfo>
-    <RouteCta>
-      <DetailsButton href="/details">DETAILS</DetailsButton>
-      <DeleteButton>DELETE</DeleteButton>
-    </RouteCta>
-  </RouteWrapper>;
+const Route = ({ id, startingPoint, destinationPoint, timeAdded }) => {
+  return (
+    <RouteWrapper>
+      <RouteInfo>
+        <RouteText>
+          <span>
+            {startingPoint.description}
+          </span>
+          <LocationHr
+            emptyDotStyle={{
+              background: theme.blue,
+              border: `1px solid ${theme.blue}`
+            }}
+            fullDotStyle={{
+              background: theme.blue
+            }}
+            className="mobileColumn"
+            childMargin="0 5px"
+            dotsNum="1"
+          />
+          <span>
+            {destinationPoint.description}
+          </span>
+        </RouteText>
+        <RouteDate>
+          {timeAdded}
+        </RouteDate>
+      </RouteInfo>
+      <RouteCta>
+        <DetailsButton href={`/route/` + id}>DETAILS</DetailsButton>
+        <DeleteButton>DELETE</DeleteButton>
+      </RouteCta>
+    </RouteWrapper>
+  );
+};
 
+Route.propTypes = {
+  startingPoint: PropTypes.object.isRequired,
+  destinationPoint: PropTypes.object.isRequired
+};
 export default Route;
