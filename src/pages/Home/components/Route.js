@@ -29,6 +29,9 @@ const DetailsButton = styled.a`
   color: ${props => props.theme.green};
   border: 1px solid rgba(112, 211, 175, .35);
   background: rgba(112, 211, 175, .24);
+  :hover {
+    background: rgba(112, 211, 175, .6);
+  }
 `;
 
 const DeleteButton = styled.button`
@@ -36,6 +39,9 @@ const DeleteButton = styled.button`
   color: ${props => props.theme.red};
   border: 1px solid rgba(242, 77, 88, .19);
   background: rgba(208, 76, 88, .35);
+  :hover {
+    background: rgba(208, 76, 88, .6);
+  }
 `;
 
 const RouteText = styled.p`
@@ -69,7 +75,7 @@ const RouteText = styled.p`
 `;
 
 const RouteDate = styled.p`
-  font-size: 0.6em;
+  font-size: 0.8em;
   font-weight: 400;
 `;
 

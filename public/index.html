@@ -8,6 +8,9 @@
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBYe5yfMHYGGJcss7dAUqPmVUgamIY3ec&libraries=places">
+</script>
+
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet">
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
@@ -26,7 +29,9 @@
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
-    <div id="root"></div>
+    <input id="searchTextField" type="text" size="50">
+    <div id="root">
+    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -37,5 +42,17 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+  <script>
+  function initialize() {
+  var input = document.getElementById(
+    "undefined-undefined-Choosestartingpoint-43010"
+  );
+  var autocomplete = new google.maps.places.Autocomplete(input);
+}
+
+setTimeout(function() {
+  google.maps.event.addDomListener(window, "load", initialize);
+}, 1000);
+</script>
   </body>
 </html>
