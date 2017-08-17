@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import LocationHr from "./LocationHr";
 import theme from "../../../theme";
 import PropTypes from "prop-types";
+import Svg from "./Svg";
 
 const RouteWrapper = styled.div`
   cursor: pointer;
@@ -16,6 +17,18 @@ const RouteWrapper = styled.div`
   color: ${props => props.theme.grey};
   font-size: 1.1rem;
   margin-bottom: 10px;
+  div.desktopVisible {
+    display: none;
+    @media screen and (min-width: 960px) {
+      display: block;
+    }
+  }
+  div.mobileVisible {
+    display: none;
+    @media screen and (max-width: 960px) {
+      display: flex;
+    }
+  }
 `;
 
 const Button = css`
@@ -97,6 +110,8 @@ const RouteInfo = styled.div`
   flex: 1;
   margin-left: 10px;
 `;
+
+// svg signature: icon, fill, hoverFill, width, height, style
 const Route = ({ id, startingPoint, destinationPoint, timeAdded }) => {
   return (
     <RouteWrapper>
@@ -113,9 +128,16 @@ const Route = ({ id, startingPoint, destinationPoint, timeAdded }) => {
             fullDotStyle={{
               background: theme.blue
             }}
-            className="mobileColumn"
+            className="mobileColumn mobileVisible"
             childMargin="0 5px"
             dotsNum="1"
+          />
+          <Svg
+            className="desktopVisible"
+            icon="arrow"
+            width="30px"
+            height="10px"
+            style={{ alignSelf: "center", marginRight: "0" }}
           />
           <span>
             {destinationPoint.description}
@@ -134,6 +156,7 @@ const Route = ({ id, startingPoint, destinationPoint, timeAdded }) => {
 };
 
 Route.propTypes = {
+  id: PropTypes.string.isRequired,
   startingPoint: PropTypes.object.isRequired,
   destinationPoint: PropTypes.object.isRequired
 };
