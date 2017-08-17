@@ -22,17 +22,33 @@ const Headline = styled.h2`
   margin: 50px 0 15px 0;
   text-align: ${props => (props.textAlign ? props.textAlign : "left")};
 `;
+
 export default class App extends Component {
+  state = {
+    routes: JSON.parse(localStorage.getItem("routes")) || []
+  };
+  addRoute = newRoute => {
+    const { routes } = this.state;
+    this.setState(
+      (prevState, props) => {
+        return {
+          routes: [...prevState.routes, newRoute]
+        };
+      },
+      () => {
+        localStorage.setItem("routes", JSON.stringify(routes));
+      }
+    );
+  };
   render() {
+    const { routes } = this.state;
     return (
       <Wrapper>
         <Container>
-          <Headline textAlign="center">
-            Where would you love to arrive?
-          </Headline>
-          <LocationPickers />
+          <Headline>Where would you love to arrive?</Headline>
+          <LocationPickers addRoute={this.addRoute} />
           <Headline color={theme.darkViolet}>Routes</Headline>
-          <Routes />
+          <Routes routes={routes} />
         </Container>
       </Wrapper>
     );
