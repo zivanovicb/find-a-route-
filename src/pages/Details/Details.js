@@ -1,18 +1,24 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { mapsAPI_KEY } from "../../config";
+import { bubble as Menu } from "react-burger-menu";
+import theme from "../../theme";
+import Top from "./components/Top";
 
 let GoogleMapsLoader = require("google-maps");
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  height: 100%;
+  width: 100%;
+`;
 
 let map;
 let directionsDisplay;
 let directionsService;
-
+let directionsLeg;
 export default class Details extends Component {
   state = {
-    start: "",
-    end: ""
+    obj: null,
+    menuShown: false
   };
   componentWillMount() {
     const { match: { params: { id } } } = this.props;
@@ -20,32 +26,35 @@ export default class Details extends Component {
       return item.id === id;
     })[0];
 
-    console.log(obj);
-    let start = obj.startingPointValue.description;
-    let end = obj.destinationPointValue.description;
-
     if (obj) {
-      this.setState({ start, end });
+      this.setState({ obj });
     }
+
+    // delay menu open to reduce lag
+    setTimeout(() => {
+      this.setState({ menuShown: true });
+    }, 2000);
   }
   componentDidMount() {
     GoogleMapsLoader.KEY = "AIzaSyBvObJn4ahKBqeSUZMb33g_EBtpuEHwklc";
     GoogleMapsLoader.LIBRARIES = ["places"];
+    console.log(this.state.obj);
     GoogleMapsLoader.load(google => {
-      initialize(google, this.state.start, this.state.end);
+      initialize(google, this.state.obj.route);
     });
   }
 
   render() {
     return (
       <Wrapper>
-        <div id="map" style={{ width: "400px", height: "400px" }} />
+        <Top data={this.state.obj} />
+        <div id="map" style={{ width: "100%", height: "100%" }} />
       </Wrapper>
     );
   }
 }
 
-function initialize(google, start, end) {
+function initialize(google, route) {
   directionsDisplay = new google.maps.DirectionsRenderer();
   directionsService = new google.maps.DirectionsService();
   var chicago = new google.maps.LatLng(41.850033, -87.6500523);
@@ -55,7 +64,7 @@ function initialize(google, start, end) {
   };
   map = new google.maps.Map(document.getElementById("map"), mapOptions);
   directionsDisplay.setMap(map);
-  calcRoute(start, end);
+  directionsDisplay.setDirections(route);
 }
 
 function calcRoute(start, end) {
@@ -71,3 +80,39 @@ function calcRoute(start, end) {
     }
   });
 }
+
+let styles = {
+  bmBurgerButton: {
+    position: "fixed",
+    width: "36px",
+    height: "30px",
+    left: "36px",
+    top: "36px"
+  },
+  bmBurgerBars: {
+    background: theme.darkViolet
+  },
+  bmCrossButton: {
+    height: "24px",
+    width: "24px"
+  },
+  bmCross: {
+    background: theme.darkViolet
+  },
+  bmMenu: {
+    display: "none",
+    background: theme.darkViolet,
+    padding: "2.5em 1.5em 0",
+    fontSize: "1.15em"
+  },
+  bmMorphShape: {
+    fill: theme.darkViolet
+  },
+  bmItemList: {
+    color: "#b8b7ad",
+    padding: "0.8em"
+  },
+  bmOverlay: {
+    background: "rgba(0, 0, 0, 0.3)"
+  }
+};

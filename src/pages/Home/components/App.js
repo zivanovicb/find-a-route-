@@ -90,7 +90,6 @@ export default class App extends Component {
             console.log(response.data.results);
             let addr = response.data.results[0].formatted_address;
             if (addr) this.setState({ userAddress: addr });
-            console.log(addr, this.state.userAddress);
           })
           .catch(e => {
             console.log(e);
