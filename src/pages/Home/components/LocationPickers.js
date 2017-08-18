@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import Headline from "../../../components/Headline";
+
+import { Motion, spring, presets } from "react-motion";
 import makeDateString from "../../../helpers/dateString";
 
 import PrimaryButton from "./PrimaryButton";
@@ -18,7 +21,8 @@ const Wrapper = styled.div`
 `;
 
 const Button = PrimaryButton.extend`
-  flex: 1 28%;
+  padding: 15px;
+  flex: 1 20%;
   position: relative;
   top: 5px;
   font-size: 1rem;
@@ -34,13 +38,23 @@ export default class LocationPickers extends Component {
     startingPointValue: null,
     destinationPointValue: null,
     startingPointError: false,
-    destinationPointError: false
+    destinationPointError: false,
+    startAnim: false,
+    // this one will fire after 1150(others are at 1000)
+    delayedAnim: false
   };
 
   componentWillMount() {
     this.setState({
       routes: JSON.parse(localStorage.getItem("routes"))
     });
+    setTimeout(() => {
+      this.setState({ startAnim: true });
+    }, 1000);
+
+    setTimeout(() => {
+      this.setState({ delayedAnim: true });
+    }, 1150);
   }
   updateStartingPoint = startingPointValue =>
     this.setState({ startingPointValue });
@@ -87,31 +101,115 @@ export default class LocationPickers extends Component {
     }
   };
   render() {
-    const { startingPointError, destinationPointError } = this.state;
+    const {
+      startingPointError,
+      destinationPointError,
+      startAnim,
+      delayedAnim
+    } = this.state;
     return (
       <div>
+        {/* Headline needs to be outside the wrapper, because Wrapper is flex parent  */}
+
+        <Motion
+          defaultStyle={{ y: -50, o: 0 }}
+          style={{
+            y: spring(startAnim ? 0 : -50, presets.wobbly),
+            o: spring(startAnim ? 1 : 0)
+          }}
+        >
+          {style =>
+            <Headline
+              style={{
+                transform: `translateY(${style.y}px)`,
+                opacity: style.o
+              }}
+            >
+              Where would you love to arrive?
+            </Headline>}
+        </Motion>
+
         <Wrapper>
-          <LocationField
-            updateValue={this.updateStartingPoint}
-            label="Choose starting point"
-            error={startingPointError}
-            errorText="Please type in your starting point"
-          />
-          <LocationHr
+          <Motion
+            defaultStyle={{ x: -350, o: 0 }}
             style={{
-              position: "relative",
-              top: "15px"
+              x: spring(startAnim ? 0 : -350, presets.wobbly),
+              o: spring(startAnim ? 1 : 0)
             }}
-            dotsNum="3"
-            childMargin="0 0 0 9px"
-          />
-          <LocationField
-            updateValue={this.updateDestinationPoint}
-            label="Choose destination"
-            error={destinationPointError}
-            errorText="Please type in your ending point"
-          />
-          <Button onClick={this.handleAdd}>Add route</Button>
+          >
+            {style =>
+              <LocationField
+                style={{
+                  width: "500px",
+                  transform: `translateX(${style.x}px)`,
+                  opacity: style.o
+                }}
+                updateValue={this.updateStartingPoint}
+                label="Choose starting point"
+                error={startingPointError}
+                errorText="Please type in your starting point"
+              />}
+          </Motion>
+
+          <Motion
+            defaultStyle={{ y: 50, o: 0 }}
+            style={{
+              y: spring(delayedAnim ? 0 : 50, presets.gentle),
+              o: spring(delayedAnim ? 1 : 0)
+            }}
+          >
+            {style =>
+              <LocationHr
+                style={{
+                  position: "relative",
+                  top: "15px",
+                  transform: `translateY(${style.y}px)`,
+                  opacity: style.o
+                }}
+                dotsNum="3"
+                childMargin="0 0 0 9px"
+              />}
+          </Motion>
+
+          <Motion
+            defaultStyle={{ x: 350, o: 0 }}
+            style={{
+              x: spring(startAnim ? 0 : 350, presets.wobbly),
+              o: spring(startAnim ? 1 : 0)
+            }}
+          >
+            {style =>
+              <LocationField
+                style={{
+                  width: "500px",
+                  transform: `translateX(${style.x}px)`,
+                  opacity: style.o
+                }}
+                updateValue={this.updateDestinationPoint}
+                label="Choose destination"
+                error={destinationPointError}
+                errorText="Please type in your ending point"
+              />}
+          </Motion>
+
+          <Motion
+            defaultStyle={{ x: 350, o: 0 }}
+            style={{
+              x: spring(startAnim ? 0 : 350, presets.wobbly),
+              o: spring(startAnim ? 1 : 0)
+            }}
+          >
+            {style =>
+              <Button
+                style={{
+                  transform: `translateX(${style.x}px)`,
+                  opacity: style.o
+                }}
+                onClick={this.handleAdd}
+              >
+                Add route
+              </Button>}
+          </Motion>
         </Wrapper>
       </div>
     );

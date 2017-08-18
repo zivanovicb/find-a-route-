@@ -43,15 +43,18 @@ export default class LocationField extends Component {
 
   render() {
     const { items } = this.state;
-    const { label, error, errorText } = this.props;
+    const { label, error, errorText, style } = this.props;
     return (
-      <AutoComplete
-        label={label}
-        items={items}
-        onUpdateInput={this.onUpdateInput}
-        error={error}
-        errorText={errorText}
-      />
+      <div style={style}>
+        <AutoComplete
+          label={label}
+          items={items}
+          onUpdateInput={this.onUpdateInput}
+          error={error}
+          errorText={errorText}
+          style={style}
+        />
+      </div>
     );
   }
 }

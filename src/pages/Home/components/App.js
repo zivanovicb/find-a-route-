@@ -5,7 +5,7 @@ import theme from "../../../theme";
 import Routes from "./Routes";
 import { CSSTransitionGroup } from "react-transition-group"; // ES6
 import "./transitions.css";
-
+import Headline from "../../../components/Headline";
 const uuidv4 = require("uuid/v4");
 
 const Wrapper = styled.div`margin-top: 50px;`;
@@ -20,17 +20,6 @@ const Container = styled.div`
   }
 `;
 
-const Headline = styled.h2`
-  color: ${props => (props.color ? props.color : props.theme.cohesiveBlue)};
-  font-size: 2em;
-  margin: 50px 0 15px 0;
-  text-align: ${props => (props.textAlign ? props.textAlign : "left")};
-  @media screen and (min-width: 960px) {
-    font-size: 2.6em;
-  }
-`;
-
-//
 export default class App extends Component {
   state = {
     routes: JSON.parse(localStorage.getItem("routes")) || []
@@ -43,6 +32,8 @@ export default class App extends Component {
           routes: [...prevState.routes, newRoute]
         };
       },
+      // cb to call after local state is changed
+      // so we are immediately updating localStorage
       () => {
         localStorage.setItem("routes", JSON.stringify(this.state.routes));
       }
@@ -76,16 +67,6 @@ export default class App extends Component {
     return (
       <Wrapper>
         <Container>
-          <CSSTransitionGroup
-            transitionName="headline"
-            transitionAppear={true}
-            transitionAppearTimeout={500}
-            transitionEnterTimeout={0}
-            transitionLeaveTimeout={0}
-          >
-            <Headline>Where would you love to arrive?</Headline>
-          </CSSTransitionGroup>
-
           <LocationPickers addRoute={this.addRoute} />
           {this.state.routes.length === 0
             ? <CSSTransitionGroup
