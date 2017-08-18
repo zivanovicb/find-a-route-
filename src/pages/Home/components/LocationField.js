@@ -25,8 +25,6 @@ export default class LocationField extends Component {
     updateValue: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
     style: PropTypes.object,
-    error: PropTypes.bool.isRequired,
-    errorText: PropTypes.string.isRequired,
     userLocation: PropTypes.object
   };
 

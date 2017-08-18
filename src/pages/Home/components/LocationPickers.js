@@ -23,6 +23,13 @@ const Wrapper = styled.div`
   }
 `;
 
+const Err = styled.p`
+  color: ${props => props.theme.red};
+  opacity: 0;
+  font-weight: bold;
+  position: relative;
+  top: 10px;
+`;
 let directionsService;
 const Button = PrimaryButton.extend`
   padding: 15px 25px 15px 0px;
@@ -68,9 +75,8 @@ export default class LocationPickers extends Component {
   state = {
     startingPointValue: null,
     destinationPointValue: null,
-
-    startingPointError: false,
-    destinationPointError: false,
+    err: false,
+    errMessage: "",
     startAnim: false,
     // this one will fire after 1150(others are at 1000)
     delayedAnim: false
@@ -109,7 +115,8 @@ export default class LocationPickers extends Component {
 
     if (startingPointValue && destinationPointValue) {
       let date = new Date();
-
+      this.setState({ err: false, errMessage: "" });
+      // make request
       calcRoute(startingPointValue, destinationPointValue, (route, status) => {
         if (status === "OK") {
           let newRoute = {
@@ -121,23 +128,20 @@ export default class LocationPickers extends Component {
           };
           this.props.addRoute(newRoute);
         } else if (status === "ZERO_RESULTS") {
-          console.log("nije ok");
+          this.setState({
+            err: true,
+            errMessage: "We couldn't find any routes. Please try again!"
+          });
         }
       });
-      // make request
+    } else {
+      this.setState({ err: true, errMessage: "Please use both fields!" });
     }
-
-    // this.props.addRoute(newRoute);
   };
 
   // svg signature: ({ className,  icon, fill, hoverFill, width, height, style })
   render() {
-    const {
-      startingPointError,
-      destinationPointError,
-      startAnim,
-      delayedAnim
-    } = this.state;
+    const { startAnim, delayedAnim, err, errMessage } = this.state;
     return (
       <div>
         {/* Headline needs to be outside the wrapper, because Wrapper is flex parent  */}
@@ -164,6 +168,9 @@ export default class LocationPickers extends Component {
             </Headline>}
         </Motion>
 
+        <Err style={{ opacity: err ? 1 : 0, margin: 0 }}>
+          {errMessage}
+        </Err>
         <Wrapper>
           {/* STARTING POINT LOCATION FIELD */}
           <Motion
@@ -183,8 +190,6 @@ export default class LocationPickers extends Component {
                 userAddress={this.props.userAddress}
                 updateValue={this.updateStartingPoint}
                 label="Choose starting point"
-                error={startingPointError}
-                errorText="Please type in your starting point"
               />}
           </Motion>
 
@@ -226,8 +231,6 @@ export default class LocationPickers extends Component {
                 }}
                 updateValue={this.updateDestinationPoint}
                 label="Choose destination"
-                error={destinationPointError}
-                errorText="Please type in your ending point"
               />}
           </Motion>
 

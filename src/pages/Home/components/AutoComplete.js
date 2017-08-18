@@ -7,8 +7,6 @@ class AutoCompleteWithFilters extends Component {
   static propTypes = {
     items: PropTypes.array,
     onUpdateInput: PropTypes.func.isRequired,
-    error: PropTypes.bool.isRequired,
-    errorText: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     userAddress: PropTypes.string
   };
