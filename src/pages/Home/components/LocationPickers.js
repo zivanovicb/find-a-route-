@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import Headline from "../../../components/Headline";
-
 import { Motion, spring, presets } from "react-motion";
 import makeDateString from "../../../helpers/dateString";
-
+import theme from "../../../theme";
 import PrimaryButton from "./PrimaryButton";
 import LocationHr from "./LocationHr";
-
+import ArrowImg from "../img/arrow-white.svg";
 import LocationField from "./LocationField";
 
 const Wrapper = styled.div`
@@ -21,22 +20,50 @@ const Wrapper = styled.div`
 `;
 
 const Button = PrimaryButton.extend`
-  padding: 15px;
-  flex: 1 20%;
+  padding: 15px 25px 15px 0px;
+  flex: 1 17%;
   position: relative;
   top: 5px;
   font-size: 1rem;
   font-weight: 400;
   letter-spacing: 0;
+  box-shadow: 0 14px 28px rgba(66, 133, 244, 0.17),
+    0 10px 10px rgba(66, 133, 244, 0.15);
+  :hover {
+    background: ${props => props.theme.red};
+    box-shadow: 0 14px 28px rgba(242, 77, 88, 0.17),
+      0 10px 10px rgba(66, 77, 88, 0.15);
+  }
   @media screen and (min-width: 960px) {
     margin-left: 15px;
+  }
+
+  @media screen and (max-width: 960px) {
+    width: 50%;
+  }
+  ::after {
+    content: "";
+    display: block;
+    width: 22px;
+    height: 22px;
+    background-image: url(${props => props.url});
+    background-size: 22px 22px;
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 16px;
+    bottom: 13px;
   }
 `;
 
 export default class LocationPickers extends Component {
   state = {
+    // primivitve values - used for switch functionality
+    startingPrimitive: "",
+    destinationPrimitive: "",
+    // startingPointValue and destinationPointValue are supposed to be objects
     startingPointValue: null,
     destinationPointValue: null,
+
     startingPointError: false,
     destinationPointError: false,
     startAnim: false,
@@ -56,10 +83,10 @@ export default class LocationPickers extends Component {
       this.setState({ delayedAnim: true });
     }, 1150);
   }
-  updateStartingPoint = startingPointValue =>
-    this.setState({ startingPointValue });
-  updateDestinationPoint = destinationPointValue =>
-    this.setState({ destinationPointValue });
+  updateStartingPoint = (startingPointValue, startingPrimitive) =>
+    this.setState({ startingPointValue, startingPrimitive });
+  updateDestinationPoint = (destinationPointValue, destinationPrimitive) =>
+    this.setState({ destinationPointValue, destinationPrimitive });
 
   handleAdd = () => {
     const { startingPointValue, destinationPointValue } = this.state;
@@ -100,6 +127,8 @@ export default class LocationPickers extends Component {
         });
     }
   };
+
+  // svg signature: ({ className, icon, fill, hoverFill, width, height, style })
   render() {
     const {
       startingPointError,
@@ -124,12 +153,17 @@ export default class LocationPickers extends Component {
                 transform: `translateY(${style.y}px)`,
                 opacity: style.o
               }}
+              textAlign="center"
             >
-              Where would you love to arrive?
+              Find a Route.{" "}
+              <span style={{ letterSpacing: "4px", fontWeight: "800" }}>
+                Real Quick.
+              </span>
             </Headline>}
         </Motion>
 
         <Wrapper>
+          {/* STARTING POINT LOCATION FIELD */}
           <Motion
             defaultStyle={{ x: -350, o: 0 }}
             style={{
@@ -151,6 +185,7 @@ export default class LocationPickers extends Component {
               />}
           </Motion>
 
+          {/* HR  */}
           <Motion
             defaultStyle={{ y: 50, o: 0 }}
             style={{
@@ -162,7 +197,7 @@ export default class LocationPickers extends Component {
               <LocationHr
                 style={{
                   position: "relative",
-                  top: "15px",
+                  top: "10px",
                   transform: `translateY(${style.y}px)`,
                   opacity: style.o
                 }}
@@ -171,6 +206,7 @@ export default class LocationPickers extends Component {
               />}
           </Motion>
 
+          {/* DESTINATION POINT */}
           <Motion
             defaultStyle={{ x: 350, o: 0 }}
             style={{
@@ -192,6 +228,7 @@ export default class LocationPickers extends Component {
               />}
           </Motion>
 
+          {/* ADD ROUTE BUTTON */}
           <Motion
             defaultStyle={{ x: 350, o: 0 }}
             style={{
@@ -201,13 +238,15 @@ export default class LocationPickers extends Component {
           >
             {style =>
               <Button
+                url={ArrowImg}
                 style={{
                   transform: `translateX(${style.x}px)`,
-                  opacity: style.o
+                  opacity: style.o,
+                  fontWeight: 700
                 }}
                 onClick={this.handleAdd}
               >
-                Add route
+                GO!
               </Button>}
           </Motion>
         </Wrapper>

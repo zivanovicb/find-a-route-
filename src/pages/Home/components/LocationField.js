@@ -2,13 +2,19 @@ import React, { Component } from "react";
 import AutoComplete from "./AutoComplete";
 import PropTypes from "prop-types";
 import axios from "axios";
-
+import styled from "styled-components";
 import { buildQueryString } from "../../../helpers/queryStringBuilder";
 // material-ui requires this for its events
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 
 const BASE_URL = "http://localhost:3000";
+
+const Wrapper = styled.div`
+  @media screen and (max-width: 550px) {
+    width: 100% !important;
+  }
+`;
 export default class LocationField extends Component {
   state = {
     value: "",
@@ -17,7 +23,10 @@ export default class LocationField extends Component {
   };
   static propTypes = {
     updateValue: PropTypes.func.isRequired,
-    label: PropTypes.string.isRequired
+    label: PropTypes.string.isRequired,
+    style: PropTypes.object,
+    error: PropTypes.bool.isRequired,
+    errorText: PropTypes.string.isRequired
   };
 
   onUpdateInput = value => {
@@ -45,7 +54,7 @@ export default class LocationField extends Component {
     const { items } = this.state;
     const { label, error, errorText, style } = this.props;
     return (
-      <div style={style}>
+      <Wrapper style={style}>
         <AutoComplete
           label={label}
           items={items}
@@ -54,7 +63,7 @@ export default class LocationField extends Component {
           errorText={errorText}
           style={style}
         />
-      </div>
+      </Wrapper>
     );
   }
 }
@@ -64,5 +73,7 @@ function updateParent(items, value, cb) {
   let obj = items.filter(item => {
     return item.description === value;
   })[0];
-  cb(obj ? obj : null);
+  // if object is foundm sends object
+  // primitive value is sent anyway
+  cb(obj ? obj : null, value);
 }

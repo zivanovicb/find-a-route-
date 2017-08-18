@@ -4,6 +4,7 @@ import LocationHr from "./LocationHr";
 import theme from "../../../theme";
 import PropTypes from "prop-types";
 import Svg from "./Svg";
+import { Motion, spring, presets } from "react-motion";
 
 const RouteWrapper = styled.div`
   cursor: pointer;
@@ -16,7 +17,14 @@ const RouteWrapper = styled.div`
   border-radius: 5px;
   color: ${props => props.theme.grey};
   font-size: 1.1rem;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 14px 28px rgba(36, 38, 59, 0.25),
+    0 10px 10px rgba(36, 38, 59, 0.22);
+  transition: all .12s ease-in-out;
+  :hover {
+    transform: scale(1.03);
+    background: #1d2563;
+  }
   div.desktopVisible {
     display: none;
     @media screen and (min-width: 960px) {
@@ -50,10 +58,24 @@ const DetailsButton = styled.a`
 `;
 
 const DeleteButton = styled.button`
+  position: relative;
   ${props => Button};
   color: ${props => props.theme.red};
   border: 1px solid rgba(242, 77, 88, .19);
   background: rgba(208, 76, 88, .35);
+  div {
+    color: "white";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: ${props => props.theme.darkRed};
+    border: 1px solid rgba(242, 77, 88, .19);
+    border-radius: 5px;
+    z-index: 9999;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+  }
   :hover {
     background: rgba(208, 76, 88, .6);
   }
@@ -114,14 +136,32 @@ const RouteInfo = styled.div`
 
 // svg signature: icon, fill, hoverFill, width, height, style
 class Route extends Component {
+  state = {
+    deleteAnimation: false
+  };
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    startingPoint: PropTypes.object.isRequired,
+    destinationPoint: PropTypes.object.isRequired,
+    timeAdded: PropTypes.string.isRequired,
+    style: PropTypes.object
+  };
   handleDelete = () => {
+    this.setState({ deleteAnimation: true });
     // updating App.js state
-    this.props.handleDelete(this.props.id);
+    //this.props.handleDelete(this.props.id);
   };
   render() {
-    const { id, startingPoint, destinationPoint, timeAdded } = this.props;
+    const { deleteAnimation } = this.state;
+    const {
+      id,
+      startingPoint,
+      destinationPoint,
+      timeAdded,
+      style
+    } = this.props;
     return (
-      <RouteWrapper>
+      <RouteWrapper className="route-card" style={style}>
         <RouteInfo>
           <RouteText>
             <span>
@@ -155,17 +195,17 @@ class Route extends Component {
           </RouteDate>
         </RouteInfo>
         <RouteCta>
-          <DetailsButton href={`/route/` + id}>DETAILS</DetailsButton>
-          <DeleteButton onClick={this.handleDelete}>DELETE</DeleteButton>
+          <DetailsButton className="details" href={`/route/` + id}>
+            DETAILS
+          </DetailsButton>
+          <DeleteButton onClick={this.handleDelete}>
+            DELETE
+            <div />
+          </DeleteButton>
         </RouteCta>
       </RouteWrapper>
     );
   }
 }
 
-Route.propTypes = {
-  id: PropTypes.string.isRequired,
-  startingPoint: PropTypes.object.isRequired,
-  destinationPoint: PropTypes.object.isRequired
-};
 export default Route;

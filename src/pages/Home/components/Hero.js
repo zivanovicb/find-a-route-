@@ -3,6 +3,10 @@ import styled from "styled-components";
 import bg from "../img/bg.jpg";
 import PrimaryButton from "./PrimaryButton";
 import { Motion, spring, presets } from "react-motion";
+import Scroll from "react-scroll"; // Imports all Mixins
+import { scroller } from "react-scroll"; //Imports scroller mixin, can use as scroller.scrollTo()
+
+let Link = Scroll.Link;
 
 const Wrapper = styled.div`
   position: relative;
@@ -11,6 +15,12 @@ const Wrapper = styled.div`
   width: 100%;
   min-width: 100%;
   height: 600px;
+  @media screen and (max-width: 1156px) {
+    height: 500px;
+  }
+  @media screen and (max-width: 670px) {
+    height: 400px;
+  }
   overflow: hidden;
 `;
 
@@ -21,9 +31,12 @@ const Img = styled.img`
   left: 0;
   width: 100%;
   max-width: 100%;
-  height: 100%;
+  min-height: 600px;
   @media screen and (min-width: 1156px) {
-    height: 600px;
+    height: 500px;
+  }
+  @media screen and (max-width: 670px) {
+    height: 400px;
   }
 `;
 
@@ -36,6 +49,7 @@ const Content = styled.div`
 `;
 
 const Headline = styled.div`
+  text-transform: uppercase;
   font-size: 3.4rem;
   letter-spacing: 7px;
   font-weight: 800;
@@ -60,30 +74,43 @@ class DarkBlue extends Component {
 }
 class Hero extends Component {
   state = {
-    startAnimation: false
+    startAnim: false
   };
   constructor(props) {
     super(props);
     setTimeout(() => {
-      this.setState({ startAnimation: true });
-    }, 500);
+      this.setState({ startAnim: true });
+    }, 1000);
   }
   render() {
-    const { startAnimation } = this.state;
-
+    const { startAnim } = this.state;
     return (
       <Wrapper>
         <Img src={bg} alt="hero" />
-        {renderContent()}
+        <Motion
+          defaultStyle={{ y: -50, o: 0 }}
+          style={{
+            y: spring(startAnim ? 0 : -50, presets.wobbly),
+            o: spring(startAnim ? 1 : 0)
+          }}
+        >
+          {style =>
+            <Content
+              style={{
+                opacity: style.o,
+                transform: `translateY(${style.y}px)`
+              }}
+            >
+              <Headline>Find a Route</Headline>
+              <Paragraph>You say where, we show how</Paragraph>
+              <Link to="app" spy={true} smooth={true} duration={500}>
+                <PrimaryButton hoverBg="#f24d58">TRY IT</PrimaryButton>
+              </Link>
+            </Content>}
+        </Motion>
       </Wrapper>
     );
   }
 }
 
-const renderContent = () =>
-  <Content>
-    <Headline>Find a Route</Headline>
-    <Paragraph>You say where, we show how</Paragraph>
-    <PrimaryButton>TRY IT</PrimaryButton>
-  </Content>;
 export default Hero;

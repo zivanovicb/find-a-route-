@@ -6,8 +6,12 @@ import Routes from "./Routes";
 import { CSSTransitionGroup } from "react-transition-group"; // ES6
 import "./transitions.css";
 import Headline from "../../../components/Headline";
-const uuidv4 = require("uuid/v4");
+import { Motion, spring, presets } from "react-motion";
+import Scroll from "react-scroll"; // Imports all Mixins
+import { scroller } from "react-scroll"; //Imports scroller mixin, can use as scroller.scrollTo()
 
+const uuidv4 = require("uuid/v4");
+let Element = Scroll.Element;
 const Wrapper = styled.div`margin-top: 50px;`;
 const Container = styled.div`
   @media screen and (max-width: 960px) {
@@ -67,22 +71,53 @@ export default class App extends Component {
     return (
       <Wrapper>
         <Container>
-          <LocationPickers addRoute={this.addRoute} />
-          {this.state.routes.length === 0
-            ? <CSSTransitionGroup
-                transitionName="headline"
-                transitionEnterTimeout={400}
-                transitionLeaveTimeout={0}
-              >
-                <Headline color={theme.darkViolet} key="1">
-                  You haven't entered any routes yet
-                </Headline>
-              </CSSTransitionGroup>
-            : <Headline color={theme.darkViolet} key="2">
-                Your routes
-              </Headline>}
+          <Element name="app">
+            <LocationPickers addRoute={this.addRoute} />
+            <Motion
+              defaultStyle={{ x: -350, o: 0 }}
+              style={{
+                x: spring(routes.length === 0 ? 0 : -350, presets.wobbly),
+                o: spring(routes.length === 0 ? 1 : 0)
+              }}
+            >
+              {style =>
+                <Headline
+                  style={{
+                    opacity: style.o,
+                    transform: `translateX(${style.x}px)`,
+                    display: routes.length == 0 ? "block" : "none"
+                  }}
+                  color={theme.darkViolet}
+                  key="1"
+                >
+                  No routes yet
+                </Headline>}
+            </Motion>
 
-          <Routes deleteRoute={this.deleteRoute} routes={routes} />
+            <Motion
+              defaultStyle={{ x: 350, o: 0 }}
+              style={{
+                x: spring(routes.length !== 0 ? 0 : 350, presets.wobbly),
+                o: spring(routes.length !== 0 ? 1 : 0)
+              }}
+            >
+              {style =>
+                <Headline
+                  className="routes-headline"
+                  style={{
+                    opacity: style.o,
+                    transform: `translateX(${style.x}px)`,
+                    display: routes.length !== 0 ? "block" : "none"
+                  }}
+                  color={theme.darkViolet}
+                  key="1"
+                >
+                  You asked for
+                </Headline>}
+            </Motion>
+
+            <Routes deleteRoute={this.deleteRoute} routes={routes} />
+          </Element>
         </Container>
       </Wrapper>
     );

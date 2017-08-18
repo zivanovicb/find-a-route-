@@ -10,7 +10,9 @@ const Button = styled.button`
   color: white;
   background: ${props => props.theme.blue};
   :hover {
-    background: #2c3e50;
+    background: ${props => props.hoverBg || "#2c3e50"};
+    box-shadow: 0 14px 28px rgba(242, 77, 88, 0.17),
+      0 10px 10px rgba(66, 77, 88, 0.15);
   }
 `;
 

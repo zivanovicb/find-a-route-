@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import Route from "./Route";
 import PropTypes from "prop-types";
-import { CSSTransitionGroup } from "react-transition-group"; // ES6
 import "./transitions.css";
 
 const Wrapper = styled.div`
@@ -15,19 +14,14 @@ const Routes = ({ routes, deleteRoute }) => {
   const items = renderRoutes(routes, deleteRoute);
   return (
     <Wrapper>
-      <CSSTransitionGroup
-        transitionName="example"
-        transitionEnterTimeout={0}
-        transitionLeaveTimeout={100}
-      >
-        {items}
-      </CSSTransitionGroup>
+      {items}
     </Wrapper>
   );
 };
 
 Routes.propTypes = {
-  routes: PropTypes.array.isRequired
+  routes: PropTypes.array.isRequired,
+  deleteRoute: PropTypes.func.isRequired
 };
 
 // Route signature: (startingPoint:obj, destinationPoint:obj, timeAdded:str)

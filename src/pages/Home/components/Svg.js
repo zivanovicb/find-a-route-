@@ -79,6 +79,33 @@ const Svg = ({ className, icon, fill, hoverFill, width, height, style }) => {
           </svg>
         </Wrapper>
       );
+    },
+    switch: () => {
+      return (
+        <Wrapper
+          style={style}
+          fill={fill}
+          hoverFill={hoverFill}
+          width={width}
+          height={height}
+          className={className}
+        >
+          <svg
+            width={width}
+            height={height}
+            style={{ position: "absolute", top: "0", left: "0" }}
+            version="1.1"
+            id="Capa_1"
+            x="0px"
+            y="0px"
+            viewBox="0 0 100 68"
+          >
+            <g>
+              <path d="M70,10H20V0L0,17l20,16v-9h50V10z M100,52L80,35v10H30v14h50v9L100,52z" />
+            </g>
+          </svg>
+        </Wrapper>
+      );
     }
   };
   return icons[icon]();
