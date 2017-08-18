@@ -9,7 +9,8 @@ class AutoCompleteWithFilters extends Component {
     onUpdateInput: PropTypes.func.isRequired,
     error: PropTypes.bool.isRequired,
     errorText: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired
+    label: PropTypes.string.isRequired,
+    userAddress: PropTypes.string
   };
   render() {
     const {
@@ -18,7 +19,8 @@ class AutoCompleteWithFilters extends Component {
       label,
       onUpdateInput,
       error,
-      errorText
+      errorText,
+      userAddress
     } = this.props;
     let arr = [];
     for (let i = 0; i < items.length; i++) arr.push(items[i].description);

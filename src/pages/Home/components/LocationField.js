@@ -26,7 +26,8 @@ export default class LocationField extends Component {
     label: PropTypes.string.isRequired,
     style: PropTypes.object,
     error: PropTypes.bool.isRequired,
-    errorText: PropTypes.string.isRequired
+    errorText: PropTypes.string.isRequired,
+    userLocation: PropTypes.object
   };
 
   onUpdateInput = value => {
@@ -47,12 +48,12 @@ export default class LocationField extends Component {
         console.log(err);
       });
 
-    updateParent(this.state.items, value, this.props.updateValue);
+    this.props.updateValue(value);
   };
 
   render() {
     const { items } = this.state;
-    const { label, error, errorText, style } = this.props;
+    const { label, error, errorText, style, userAddress } = this.props;
     return (
       <Wrapper style={style}>
         <AutoComplete
@@ -62,18 +63,9 @@ export default class LocationField extends Component {
           error={error}
           errorText={errorText}
           style={style}
+          userAddress={userAddress ? userAddress : "Your location"}
         />
       </Wrapper>
     );
   }
-}
-
-// whole place object is sent back to parent
-function updateParent(items, value, cb) {
-  let obj = items.filter(item => {
-    return item.description === value;
-  })[0];
-  // if object is foundm sends object
-  // primitive value is sent anyway
-  cb(obj ? obj : null, value);
 }

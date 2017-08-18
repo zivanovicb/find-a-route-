@@ -9,7 +9,7 @@ import Headline from "../../../components/Headline";
 import { Motion, spring, presets } from "react-motion";
 import Scroll from "react-scroll"; // Imports all Mixins
 import { scroller } from "react-scroll"; //Imports scroller mixin, can use as scroller.scrollTo()
-
+import axios from "axios";
 const uuidv4 = require("uuid/v4");
 let Element = Scroll.Element;
 const Wrapper = styled.div`margin-top: 50px;`;
@@ -26,7 +26,12 @@ const Container = styled.div`
 
 export default class App extends Component {
   state = {
-    routes: JSON.parse(localStorage.getItem("routes")) || []
+    routes: JSON.parse(localStorage.getItem("routes")) || [],
+    geolocationSupport: true,
+    // has lat and lng
+    userLocation: null,
+    // street address,
+    userAddress: null
   };
   addRoute = newRoute => {
     const { routes } = this.state;
@@ -66,13 +71,46 @@ export default class App extends Component {
       });
     }
   };
+  componentWillMount() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        let pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+
+        this.setState({ userLocation: pos });
+        // call to get user address
+        axios
+          .request({
+            method: "GET",
+            url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=AIzaSyBvObJn4ahKBqeSUZMb33g_EBtpuEHwklc`
+          })
+          .then(response => {
+            console.log(response.data.results);
+            let addr = response.data.results[0].formatted_address;
+            if (addr) this.setState({ userAddress: addr });
+            console.log(addr, this.state.userAddress);
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      });
+    } else {
+      this.setState({ geolocationSupport: false });
+    }
+  }
   render() {
-    const { routes } = this.state;
+    console.log(this.state);
+    const { routes, userAddress } = this.state;
     return (
       <Wrapper>
         <Container>
           <Element name="app">
-            <LocationPickers addRoute={this.addRoute} />
+            <LocationPickers
+              userAddress={userAddress}
+              addRoute={this.addRoute}
+            />
             <Motion
               defaultStyle={{ x: -350, o: 0 }}
               style={{

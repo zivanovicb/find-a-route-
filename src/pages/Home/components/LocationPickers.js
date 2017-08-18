@@ -8,6 +8,10 @@ import PrimaryButton from "./PrimaryButton";
 import LocationHr from "./LocationHr";
 import ArrowImg from "../img/arrow-white.svg";
 import LocationField from "./LocationField";
+import PropTypes from "prop-types";
+let GoogleMapsLoader = require("google-maps");
+
+let uuidv1 = require("uuid/v1");
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,6 +23,7 @@ const Wrapper = styled.div`
   }
 `;
 
+let directionsService;
 const Button = PrimaryButton.extend`
   padding: 15px 25px 15px 0px;
   flex: 1 17%;
@@ -56,11 +61,11 @@ const Button = PrimaryButton.extend`
 `;
 
 export default class LocationPickers extends Component {
+  static propTypes = {
+    userAddress: PropTypes.string,
+    addRoute: PropTypes.func.isRequired
+  };
   state = {
-    // primivitve values - used for switch functionality
-    startingPrimitive: "",
-    destinationPrimitive: "",
-    // startingPointValue and destinationPointValue are supposed to be objects
     startingPointValue: null,
     destinationPointValue: null,
 
@@ -83,52 +88,49 @@ export default class LocationPickers extends Component {
       this.setState({ delayedAnim: true });
     }, 1150);
   }
-  updateStartingPoint = (startingPointValue, startingPrimitive) =>
-    this.setState({ startingPointValue, startingPrimitive });
-  updateDestinationPoint = (destinationPointValue, destinationPrimitive) =>
-    this.setState({ destinationPointValue, destinationPrimitive });
+
+  componentDidMount() {
+    GoogleMapsLoader.KEY = "AIzaSyBvObJn4ahKBqeSUZMb33g_EBtpuEHwklc";
+    GoogleMapsLoader.LIBRARIES = ["places"];
+    GoogleMapsLoader.load(google => {
+      initialize(google, this.state.startingPointValue, this.state.end);
+    });
+  }
+
+  updateStartingPoint = startingPointValue =>
+    this.setState({ startingPointValue });
+  updateDestinationPoint = destinationPointValue =>
+    this.setState({ destinationPointValue });
 
   handleAdd = () => {
     const { startingPointValue, destinationPointValue } = this.state;
-    if (
-      startingPointValue &&
-      destinationPointValue &&
-      (typeof startingPointValue === "object" &&
-        typeof destinationPointValue === "object")
-    ) {
-      let uuidv1 = require("uuid/v1");
-      uuidv1(); // ⇨ '985123a0-7e4f-11e7-9022-fb7190c856e4'
 
+    console.log(startingPointValue, destinationPointValue);
+
+    if (startingPointValue && destinationPointValue) {
       let date = new Date();
-      // Geting date in text
-      let d = makeDateString(date);
 
-      let newRoute = {
-        id: uuidv1(),
-        startingPointValue,
-        destinationPointValue,
-        date: d
-      };
-
-      this.props.addRoute(newRoute);
-      this.setState({
-        startingPointError: false,
-        destinationPointError: false
+      calcRoute(startingPointValue, destinationPointValue, (route, status) => {
+        if (status === "OK") {
+          let newRoute = {
+            id: uuidv1(),
+            dateAdded: makeDateString(date),
+            startingPointValue,
+            destinationPointValue,
+            route
+          };
+          this.props.addRoute(newRoute);
+        } else if (status === "ZERO_RESULTS") {
+          console.log("nije ok");
+        }
       });
-
-      // we check for errors only when user tries to get route(clicks on button)
-    } else {
-      const { startingPointValue, destinationPointValue } = this.state;
-      if (!startingPointValue) this.setState({ startingPointError: true });
-
-      if (!destinationPointValue)
-        this.setState({
-          destinationPointError: true
-        });
+      // make request
     }
+
+    // this.props.addRoute(newRoute);
   };
 
-  // svg signature: ({ className, icon, fill, hoverFill, width, height, style })
+  // svg signature: ({ className,  icon, fill, hoverFill, width, height, style })
   render() {
     const {
       startingPointError,
@@ -178,6 +180,7 @@ export default class LocationPickers extends Component {
                   transform: `translateX(${style.x}px)`,
                   opacity: style.o
                 }}
+                userAddress={this.props.userAddress}
                 updateValue={this.updateStartingPoint}
                 label="Choose starting point"
                 error={startingPointError}
@@ -254,3 +257,32 @@ export default class LocationPickers extends Component {
     );
   }
 }
+
+function initialize(google, start, end) {
+  directionsService = new google.maps.DirectionsService();
+  var chicago = new google.maps.LatLng(41.850033, -87.6500523);
+  let mapOptions = {
+    zoom: 7,
+    center: chicago
+  };
+  let routeRes = calcRoute(start, end);
+}
+
+function calcRoute(start, end, cb) {
+  var request = {
+    origin: start,
+    destination: end,
+    travelMode: "DRIVING"
+  };
+  console.log(start, end);
+  let res;
+  directionsService.route(request, (result, status) => {
+    cb(result, status);
+  });
+}
+
+const handleErrors = response => {
+  if (response.status === "ZERO_RESULTS") {
+    return "Sorry, we couldn't find specified route. Please try again!";
+  }
+};

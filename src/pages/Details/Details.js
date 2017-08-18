@@ -14,55 +14,58 @@ export default class Details extends Component {
     start: "",
     end: ""
   };
+  componentWillMount() {
+    const { match: { params: { id } } } = this.props;
+    let obj = JSON.parse(localStorage.getItem("routes")).filter(item => {
+      return item.id === id;
+    })[0];
+
+    console.log(obj);
+    let start = obj.startingPointValue.description;
+    let end = obj.destinationPointValue.description;
+
+    if (obj) {
+      this.setState({ start, end });
+    }
+  }
   componentDidMount() {
-    console.log(mapsAPI_KEY);
-    GoogleMapsLoader.KEY = mapsAPI_KEY;
+    GoogleMapsLoader.KEY = "AIzaSyBvObJn4ahKBqeSUZMb33g_EBtpuEHwklc";
     GoogleMapsLoader.LIBRARIES = ["places"];
-    GoogleMapsLoader.load(function(google) {
-      initialize(google);
+    GoogleMapsLoader.load(google => {
+      initialize(google, this.state.start, this.state.end);
     });
   }
-  handleChange = e => {
-    const { target: { value } } = e;
-    this.setState({ start: value }, () => {
-      console.log(this.state);
-    });
-    calcRoute();
-  };
+
   render() {
     return (
       <Wrapper>
-        <input type="text" onChange={this.handleChange} id="start" />
-        <input type="text" value="belgrade" id="end" />
         <div id="map" style={{ width: "400px", height: "400px" }} />
       </Wrapper>
     );
   }
 }
 
-function initialize(google) {
+function initialize(google, start, end) {
   directionsDisplay = new google.maps.DirectionsRenderer();
   directionsService = new google.maps.DirectionsService();
-  let chicago = new google.maps.LatLng(41.850033, -87.6500523);
+  var chicago = new google.maps.LatLng(41.850033, -87.6500523);
   let mapOptions = {
     zoom: 7,
     center: chicago
   };
   map = new google.maps.Map(document.getElementById("map"), mapOptions);
   directionsDisplay.setMap(map);
-  calcRoute();
+  calcRoute(start, end);
 }
 
-function calcRoute() {
-  var start = document.getElementById("start").value;
-  var end = document.getElementById("end").value;
-  console.log(start, end);
+function calcRoute(start, end) {
   var request = {
     origin: start,
     destination: end,
     travelMode: "DRIVING"
   };
   directionsService.route(request, function(result, status) {
+    console.log("result is ", result, "status is ", status);
     if (status === "OK") {
       directionsDisplay.setDirections(result);
     }

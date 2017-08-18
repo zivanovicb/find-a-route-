@@ -141,8 +141,8 @@ class Route extends Component {
   };
   static propTypes = {
     id: PropTypes.string.isRequired,
-    startingPoint: PropTypes.object.isRequired,
-    destinationPoint: PropTypes.object.isRequired,
+    startingPointValue: PropTypes.string.isRequired,
+    destinationPointValue: PropTypes.string.isRequired,
     timeAdded: PropTypes.string.isRequired,
     style: PropTypes.object
   };
@@ -155,8 +155,8 @@ class Route extends Component {
     const { deleteAnimation } = this.state;
     const {
       id,
-      startingPoint,
-      destinationPoint,
+      startingPointValue,
+      destinationPointValue,
       timeAdded,
       style
     } = this.props;
@@ -165,7 +165,7 @@ class Route extends Component {
         <RouteInfo>
           <RouteText>
             <span>
-              {startingPoint.description}
+              {startingPointValue}
             </span>
             <LocationHr
               emptyDotStyle={{
@@ -187,7 +187,7 @@ class Route extends Component {
               style={{ alignSelf: "center", marginRight: "0" }}
             />
             <span>
-              {destinationPoint.description}
+              {destinationPointValue}
             </span>
           </RouteText>
           <RouteDate>

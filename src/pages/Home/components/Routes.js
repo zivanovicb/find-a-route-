@@ -31,9 +31,9 @@ const renderRoutes = (routes, deleteRoute) => {
       <Route
         key={i.toString()}
         id={item.id}
-        startingPoint={item.startingPointValue}
-        destinationPoint={item.destinationPointValue}
-        timeAdded={item.date}
+        startingPointValue={item.startingPointValue}
+        destinationPointValue={item.destinationPointValue}
+        timeAdded={item.dateAdded}
         handleDelete={deleteRoute}
       />
     );
