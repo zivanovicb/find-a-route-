@@ -36,7 +36,8 @@ app.get("/api/autocomplete/", function(req, res) {
       method: "GET",
       params: {
         key: config.mapsAPI_KEY,
-        input: query
+        input: query,
+        types: "geocode"
       }
     })
     .then(function(response) {
