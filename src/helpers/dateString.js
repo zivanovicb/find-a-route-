@@ -3,6 +3,7 @@ const dateString = date => {
   let parts = str.split(" ");
   let d = parts[2];
   let m = parts[1];
+
   let h = date.getHours();
   let mins = date.getMinutes();
 

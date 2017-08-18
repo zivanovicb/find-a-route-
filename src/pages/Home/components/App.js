@@ -87,7 +87,6 @@ export default class App extends Component {
             url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=AIzaSyBvObJn4ahKBqeSUZMb33g_EBtpuEHwklc`
           })
           .then(response => {
-            console.log(response.data.results);
             let addr = response.data.results[0].formatted_address;
             if (addr) this.setState({ userAddress: addr });
           })
@@ -100,7 +99,6 @@ export default class App extends Component {
     }
   }
   render() {
-    console.log(this.state);
     const { routes, userAddress } = this.state;
     return (
       <Wrapper>

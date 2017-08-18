@@ -111,11 +111,9 @@ class Route extends Component {
   handleDelete = () => {
     this.setState({ deleteAnimation: true });
     // updating App.js state
-    //this.props.handleDelete(this.props.id);
+    this.props.handleDelete(this.props.id);
   };
-  handleRedirect = () => {
-    this.setState({ redirect: !this.state.redirect });
-  };
+
   render() {
     const { deleteAnimation } = this.state;
     const {
@@ -126,12 +124,7 @@ class Route extends Component {
       style
     } = this.props;
     return (
-      <RouteWrapper
-        onClick={this.handleRedirect}
-        className="route-card"
-        style={style}
-      >
-        {this.state.redirect ? <Redirect to={`/route/${id}`} /> : null}
+      <RouteWrapper className="route-card" style={style}>
         <RouteInfo>
           <RouteText>
             <span>

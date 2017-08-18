@@ -277,7 +277,6 @@ function calcRoute(start, end, cb) {
     destination: end,
     travelMode: "DRIVING"
   };
-  console.log(start, end);
   let res;
   directionsService.route(request, (result, status) => {
     cb(result, status);

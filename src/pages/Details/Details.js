@@ -4,7 +4,7 @@ import { mapsAPI_KEY } from "../../config";
 import { bubble as Menu } from "react-burger-menu";
 import theme from "../../theme";
 import Top from "./components/Top";
-
+import PropTypes from "prop-types";
 let GoogleMapsLoader = require("google-maps");
 const Wrapper = styled.div`
   height: 100%;
@@ -20,6 +20,10 @@ export default class Details extends Component {
     obj: null,
     menuShown: false
   };
+  static contextTypes = {
+    router: PropTypes.object
+  };
+
   componentWillMount() {
     const { match: { params: { id } } } = this.props;
     let obj = JSON.parse(localStorage.getItem("routes")).filter(item => {
@@ -44,10 +48,27 @@ export default class Details extends Component {
     });
   }
 
+  deleteRoute = id => {
+    let routes = JSON.parse(localStorage.getItem("routes"));
+    let index = routes.findIndex(o => {
+      return o.id === id;
+    });
+
+    let copyArr = routes;
+    console.log("before deleting", JSON.parse(localStorage.getItem("routes")));
+    // if we find the obj in state, as we should
+    // and we can instantly change localStorage
+    if (index != -1) {
+      copyArr.splice(index, 1);
+      localStorage.setItem("routes", JSON.stringify(copyArr));
+    }
+    console.log("after deleting", JSON.parse(localStorage.getItem("routes")));
+  };
+
   render() {
     return (
       <Wrapper>
-        <Top data={this.state.obj} />
+        <Top deleteRoute={this.deleteRoute} data={this.state.obj} />
         <div id="map" style={{ width: "100%", height: "100%" }} />
       </Wrapper>
     );
@@ -80,39 +101,3 @@ function calcRoute(start, end) {
     }
   });
 }
-
-let styles = {
-  bmBurgerButton: {
-    position: "fixed",
-    width: "36px",
-    height: "30px",
-    left: "36px",
-    top: "36px"
-  },
-  bmBurgerBars: {
-    background: theme.darkViolet
-  },
-  bmCrossButton: {
-    height: "24px",
-    width: "24px"
-  },
-  bmCross: {
-    background: theme.darkViolet
-  },
-  bmMenu: {
-    display: "none",
-    background: theme.darkViolet,
-    padding: "2.5em 1.5em 0",
-    fontSize: "1.15em"
-  },
-  bmMorphShape: {
-    fill: theme.darkViolet
-  },
-  bmItemList: {
-    color: "#b8b7ad",
-    padding: "0.8em"
-  },
-  bmOverlay: {
-    background: "rgba(0, 0, 0, 0.3)"
-  }
-};
