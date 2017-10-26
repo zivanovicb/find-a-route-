@@ -10,9 +10,14 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
 import Home from "./pages/Home/Home";
 import Details from "./pages/Details/Details";
+import createHashHistory from "history/createHashHistory";
+
+const hashHistory = createHashHistory({
+  hashType: "slash" // the default
+});
 
 const Routing = () => (
-  <Router>
+  <Router history={hashHistory}>
     <div>
       <ThemeProvider theme={theme}>
         <MuiThemeProvider>
