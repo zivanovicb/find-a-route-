@@ -12,11 +12,7 @@ const Wrapper = styled.div`
 const Routes = ({ routes, deleteRoute }) => {
   // injecting cb for each route
   const items = renderRoutes(routes, deleteRoute);
-  return (
-    <Wrapper>
-      {items}
-    </Wrapper>
-  );
+  return <Wrapper>{items}</Wrapper>;
 };
 
 Routes.propTypes = {

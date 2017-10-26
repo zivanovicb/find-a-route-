@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { mapsAPI_KEY } from "../../config";
 import Top from "./components/Top";
 import PropTypes from "prop-types";
 let GoogleMapsLoader = require("google-maps");
@@ -11,7 +10,6 @@ const Wrapper = styled.div`
 
 let map;
 let directionsDisplay;
-let directionsService;
 
 export default class Details extends Component {
   state = {
@@ -54,7 +52,7 @@ export default class Details extends Component {
     let copyArr = routes;
     // if we find the obj in state, as we should
     // and we can instantly change localStorage
-    if (index != -1) {
+    if (index !== -1) {
       copyArr.splice(index, 1);
       localStorage.setItem("routes", JSON.stringify(copyArr));
     }
@@ -72,7 +70,6 @@ export default class Details extends Component {
 
 function initialize(google, route) {
   directionsDisplay = new google.maps.DirectionsRenderer();
-  directionsService = new google.maps.DirectionsService();
   var chicago = new google.maps.LatLng(41.850033, -87.6500523);
   let mapOptions = {
     zoom: 7,
@@ -81,17 +78,4 @@ function initialize(google, route) {
   map = new google.maps.Map(document.getElementById("map"), mapOptions);
   directionsDisplay.setMap(map);
   directionsDisplay.setDirections(route);
-}
-
-function calcRoute(start, end) {
-  var request = {
-    origin: start,
-    destination: end,
-    travelMode: "DRIVING"
-  };
-  directionsService.route(request, function(result, status) {
-    if (status === "OK") {
-      directionsDisplay.setDirections(result);
-    }
-  });
 }

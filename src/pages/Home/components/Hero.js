@@ -3,9 +3,7 @@ import styled from "styled-components";
 import bg from "../img/bg.jpg";
 import PrimaryButton from "./PrimaryButton";
 import { Motion, spring, presets } from "react-motion";
-import Scroll from "react-scroll"; // Imports all Mixins
-
-let Link = Scroll.Link;
+import PropTypes from "prop-types";
 
 const Wrapper = styled.div`
   position: relative;
@@ -66,6 +64,14 @@ class Hero extends Component {
       this.setState({ startAnim: true });
     }, 1000);
   }
+
+  scrollToScrollNode = () => {
+    if (this.props.scrollNode) {
+      this.props.scrollNode.scrollIntoView({ behavior: "smooth" });
+    } else {
+      return;
+    }
+  };
   render() {
     const { startAnim } = this.state;
     return (
@@ -87,9 +93,12 @@ class Hero extends Component {
             >
               <Headline>Find a Route</Headline>
               <Paragraph>You say where, we show how</Paragraph>
-              <Link to="app" spy={true} smooth={true} duration={500}>
-                <PrimaryButton hoverBg="#f24d58">TRY IT</PrimaryButton>
-              </Link>
+              <PrimaryButton
+                hoverBg="#f24d58"
+                onClick={this.scrollToScrollNode}
+              >
+                TRY IT
+              </PrimaryButton>
             </Content>
           )}
         </Motion>
@@ -98,4 +107,9 @@ class Hero extends Component {
   }
 }
 
+Hero.propTypes = {
+  // first value given to component is null which is object
+  // and second value is DOM Element
+  scrollNode: PropTypes.element
+};
 export default Hero;

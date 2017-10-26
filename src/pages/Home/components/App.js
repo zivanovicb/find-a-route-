@@ -6,10 +6,8 @@ import Routes from "./Routes";
 import "./transitions.css";
 import Headline from "../../../components/Headline";
 import { Motion, spring, presets } from "react-motion";
-import Scroll from "react-scroll"; // Imports all Mixins
 import axios from "axios";
-let Element = Scroll.Element;
-let Link = Scroll.Link;
+import PropTypes from "prop-types";
 
 const Wrapper = styled.div`margin-top: 50px;`;
 const Container = styled.div`
@@ -33,7 +31,6 @@ export default class App extends Component {
     userAddress: null
   };
   addRoute = newRoute => {
-    const { routes } = this.state;
     this.setState(
       (prevState, props) => {
         return {
@@ -58,14 +55,15 @@ export default class App extends Component {
 
     // if we find the obj in state, as we should
     // and we can instantly change localStorage
-    if (index != -1) {
+    if (index !== -1) {
       copyArr.splice(index, 1);
       this.setState({ routes: copyArr }, () => {
         localStorage.setItem("routes", JSON.stringify(copyArr));
       });
     }
   };
-  componentWillMount() {
+
+  componentDidMount() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         let pos = {
@@ -92,18 +90,18 @@ export default class App extends Component {
       this.setState({ geolocationSupport: false });
     }
   }
+
   render() {
     const { routes, userAddress, userLocation } = this.state;
     return (
       <Wrapper>
         <Container>
-          <Link to="app">OKKKK</Link>
-          <Element name="app">
+          <div>
             <LocationPickers
-              name="app"
               userAddress={userAddress}
               userLocation={userLocation}
               addRoute={this.addRoute}
+              getScrollNode={this.props.getScrollNode}
             />
             <Motion
               defaultStyle={{ x: -350, o: 0 }}
@@ -117,7 +115,7 @@ export default class App extends Component {
                   style={{
                     opacity: style.o,
                     transform: `translateX(${style.x}px)`,
-                    display: routes.length == 0 ? "block" : "none"
+                    display: routes.length === 0 ? "block" : "none"
                   }}
                   color={theme.darkViolet}
                   key="1"
@@ -149,11 +147,14 @@ export default class App extends Component {
                 </Headline>
               )}
             </Motion>
-
             <Routes deleteRoute={this.deleteRoute} routes={routes} />
-          </Element>
+          </div>
         </Container>
       </Wrapper>
     );
   }
 }
+
+App.propTypes = {
+  getScrollNode: PropTypes.func.isRequired
+};

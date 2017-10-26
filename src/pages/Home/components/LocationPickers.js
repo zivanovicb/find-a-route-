@@ -70,7 +70,8 @@ const Button = PrimaryButton.extend`
 export default class LocationPickers extends Component {
   static propTypes = {
     userAddress: PropTypes.string,
-    addRoute: PropTypes.func.isRequired
+    addRoute: PropTypes.func.isRequired,
+    getScrollNode: PropTypes.func.isRequired
   };
   state = {
     startingPointValue: null,
@@ -101,6 +102,7 @@ export default class LocationPickers extends Component {
     GoogleMapsLoader.load(google => {
       initialize(google, this.state.startingPointValue, this.state.end);
     });
+    this.props.getScrollNode(this.scrollNode);
   }
 
   updateStartingPoint = startingPointValue =>
@@ -148,7 +150,7 @@ export default class LocationPickers extends Component {
       userLocation
     } = this.state;
     return (
-      <div>
+      <div ref={ref => (this.scrollNode = ref)}>
         {/* Headline needs to be outside the wrapper, because Wrapper is flex parent  */}
 
         <Motion

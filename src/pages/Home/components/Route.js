@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import LocationHr from "./LocationHr";
 import theme from "../../../theme";
 import PropTypes from "prop-types";
