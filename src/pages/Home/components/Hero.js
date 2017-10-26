@@ -56,21 +56,6 @@ const Headline = styled.div`
 
 const Paragraph = styled.p`letter-spacing: 3px;`;
 
-const DarkBlueContainer = styled.div`
-  width: 2000px;
-  height: 600px;
-  background: #2b3b67;
-`;
-class DarkBlue extends Component {
-  shouldComponentUpdate() {
-    return false;
-  }
-  render() {
-    console.log("rendered");
-    const { style } = this.props;
-    return <DarkBlueContainer style={style} />;
-  }
-}
 class Hero extends Component {
   state = {
     startAnim: false

@@ -8,8 +8,9 @@ import Headline from "../../../components/Headline";
 import { Motion, spring, presets } from "react-motion";
 import Scroll from "react-scroll"; // Imports all Mixins
 import axios from "axios";
-
 let Element = Scroll.Element;
+let Link = Scroll.Link;
+
 const Wrapper = styled.div`margin-top: 50px;`;
 const Container = styled.div`
   @media screen and (max-width: 960px) {
@@ -96,8 +97,10 @@ export default class App extends Component {
     return (
       <Wrapper>
         <Container>
+          <Link to="app">OKKKK</Link>
           <Element name="app">
             <LocationPickers
+              name="app"
               userAddress={userAddress}
               userLocation={userLocation}
               addRoute={this.addRoute}

@@ -3,14 +3,13 @@ import styled from "styled-components";
 import Headline from "../../../components/Headline";
 import { Motion, spring, presets } from "react-motion";
 import makeDateString from "../../../helpers/dateString";
-import theme from "../../../theme";
 import PrimaryButton from "./PrimaryButton";
 import LocationHr from "./LocationHr";
 import ArrowImg from "../img/arrow-white.svg";
 import LocationField from "./LocationField";
 import PropTypes from "prop-types";
-let GoogleMapsLoader = require("google-maps");
 
+let GoogleMapsLoader = require("google-maps");
 var directionsService;
 
 let uuidv1 = require("uuid/v1");
@@ -274,12 +273,6 @@ export default class LocationPickers extends Component {
 
 function initialize(google, start, end) {
   directionsService = new google.maps.DirectionsService();
-  var chicago = new google.maps.LatLng(41.850033, -87.6500523);
-  let mapOptions = {
-    zoom: 7,
-    center: chicago
-  };
-  let routeRes = calcRoute(start, end);
 }
 
 function calcRoute(start, end, cb) {
@@ -288,14 +281,7 @@ function calcRoute(start, end, cb) {
     destination: end,
     travelMode: "DRIVING"
   };
-  let res;
   directionsService.route(request, (result, status) => {
     cb(result, status);
   });
 }
-
-const handleErrors = response => {
-  if (response.status === "ZERO_RESULTS") {
-    return "Sorry, we couldn't find any driving routes for these locations";
-  }
-};
