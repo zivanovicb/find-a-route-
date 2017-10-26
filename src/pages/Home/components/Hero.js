@@ -12,6 +12,10 @@ const Wrapper = styled.div`
   width: 100%;
   min-width: 100%;
   height: 600px;
+  background: url(${bg});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
   @media screen and (max-width: 1156px) {
     height: 500px;
   }
@@ -19,22 +23,6 @@ const Wrapper = styled.div`
     height: 400px;
   }
   overflow: hidden;
-`;
-
-const Img = styled.img`
-  position: absolute;
-  z-index: -9999;
-  top: 0;
-  left: 0;
-  width: 100%;
-  max-width: 100%;
-  min-height: 600px;
-  @media screen and (min-width: 1156px) {
-    height: 500px;
-  }
-  @media screen and (max-width: 670px) {
-    height: 400px;
-  }
 `;
 
 const Content = styled.div`
@@ -76,7 +64,6 @@ class Hero extends Component {
     const { startAnim } = this.state;
     return (
       <Wrapper>
-        <Img src={bg} alt="hero" />
         <Motion
           defaultStyle={{ y: -50, o: 0 }}
           style={{
