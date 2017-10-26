@@ -11,15 +11,7 @@ class AutoCompleteWithFilters extends Component {
     userAddress: PropTypes.string
   };
   render() {
-    const {
-      items,
-      onChange,
-      label,
-      onUpdateInput,
-      error,
-      errorText,
-      userAddress
-    } = this.props;
+    const { items, label, onUpdateInput, error, errorText } = this.props;
     let arr = [];
     for (let i = 0; i < items.length; i++) arr.push(items[i].description);
     return (

@@ -4,8 +4,6 @@ import LocationHr from "./LocationHr";
 import theme from "../../../theme";
 import PropTypes from "prop-types";
 import Svg from "./Svg";
-import { Motion, spring, presets } from "react-motion";
-import { Redirect } from "react-router";
 import DeleteButton from "../../../components/DeleteButton";
 import DetailsButton from "../../../components/DetailsButton";
 
@@ -23,7 +21,7 @@ const RouteWrapper = styled.div`
   margin-bottom: 20px;
   box-shadow: 0 14px 28px rgba(36, 38, 59, 0.25),
     0 10px 10px rgba(36, 38, 59, 0.22);
-  transition: all .12s ease-in-out;
+  transition: all 0.12s ease-in-out;
   :hover {
     transform: scale(1.03);
     background: #1d2563;
@@ -115,7 +113,6 @@ class Route extends Component {
   };
 
   render() {
-    const { deleteAnimation } = this.state;
     const {
       id,
       startingPointValue,
@@ -127,9 +124,7 @@ class Route extends Component {
       <RouteWrapper className="route-card" style={style}>
         <RouteInfo>
           <RouteText>
-            <span>
-              {startingPointValue}
-            </span>
+            <span>{startingPointValue}</span>
             <LocationHr
               emptyDotStyle={{
                 background: theme.blue,
@@ -149,13 +144,9 @@ class Route extends Component {
               height="10px"
               style={{ alignSelf: "center", marginRight: "0" }}
             />
-            <span>
-              {destinationPointValue}
-            </span>
+            <span>{destinationPointValue}</span>
           </RouteText>
-          <RouteDate>
-            {timeAdded}
-          </RouteDate>
+          <RouteDate>{timeAdded}</RouteDate>
         </RouteInfo>
         <RouteCta>
           <DetailsButton className="details" href={`/route/` + id}>

@@ -11,7 +11,7 @@ export default class Home extends Component {
       <Wrapper>
         <Hero />
         <App />
-        <div style={{ width: "100%", height: "1000px" }} />
+        <div style={{ width: "100%", height: "300" }} />
       </Wrapper>
     );
   }

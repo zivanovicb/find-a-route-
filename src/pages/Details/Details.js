@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { mapsAPI_KEY } from "../../config";
-import { bubble as Menu } from "react-burger-menu";
-import theme from "../../theme";
 import Top from "./components/Top";
 import PropTypes from "prop-types";
 let GoogleMapsLoader = require("google-maps");
@@ -14,7 +12,7 @@ const Wrapper = styled.div`
 let map;
 let directionsDisplay;
 let directionsService;
-let directionsLeg;
+
 export default class Details extends Component {
   state = {
     obj: null,
@@ -42,7 +40,6 @@ export default class Details extends Component {
   componentDidMount() {
     GoogleMapsLoader.KEY = "AIzaSyBvObJn4ahKBqeSUZMb33g_EBtpuEHwklc";
     GoogleMapsLoader.LIBRARIES = ["places"];
-    console.log(this.state.obj);
     GoogleMapsLoader.load(google => {
       initialize(google, this.state.obj.route);
     });
@@ -55,14 +52,12 @@ export default class Details extends Component {
     });
 
     let copyArr = routes;
-    console.log("before deleting", JSON.parse(localStorage.getItem("routes")));
     // if we find the obj in state, as we should
     // and we can instantly change localStorage
     if (index != -1) {
       copyArr.splice(index, 1);
       localStorage.setItem("routes", JSON.stringify(copyArr));
     }
-    console.log("after deleting", JSON.parse(localStorage.getItem("routes")));
   };
 
   render() {
@@ -95,7 +90,6 @@ function calcRoute(start, end) {
     travelMode: "DRIVING"
   };
   directionsService.route(request, function(result, status) {
-    console.log("result is ", result, "status is ", status);
     if (status === "OK") {
       directionsDisplay.setDirections(result);
     }

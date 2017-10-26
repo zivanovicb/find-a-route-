@@ -29,6 +29,8 @@ export default class LocationField extends Component {
   };
 
   onUpdateInput = value => {
+    const { userLocation } = this.props;
+    console.log(userLocation);
     let queryString = buildQueryString(value);
     // getting autocomplete items
     axios

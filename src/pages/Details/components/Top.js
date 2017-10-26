@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   left: 0;
   z-index: 9999999999;
   overflow: hidden;
-  opacity: .98;
+  opacity: 0.98;
   @media screen and (max-width: 970px) {
     height: auto;
     padding: 25px 0;
@@ -53,21 +53,17 @@ class TopBar extends Component {
   };
   handleDelete = () => {
     const { data: { id } } = this.props;
-    console.log(id);
     this.props.deleteRoute(id);
     this.setState({ deleted: true });
   };
   render() {
     const { data } = this.props;
-    console.log(this.props);
     return (
       <Wrapper>
         {this.state.deleted ? <Redirect to="/" /> : null}
         <Container>
           <Flex>
-            <p>
-              {data.startingPointValue}
-            </p>
+            <p>{data.startingPointValue}</p>
             <Svg
               style={{ margin: "0 20px" }}
               icon="arrow"
@@ -75,9 +71,7 @@ class TopBar extends Component {
               width="25px"
               fill="#70d3af"
             />
-            <p>
-              {data.destinationPointValue}
-            </p>
+            <p>{data.destinationPointValue}</p>
           </Flex>
 
           <Flex>

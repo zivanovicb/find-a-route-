@@ -11,6 +11,8 @@ import LocationField from "./LocationField";
 import PropTypes from "prop-types";
 let GoogleMapsLoader = require("google-maps");
 
+var directionsService;
+
 let uuidv1 = require("uuid/v1");
 
 const Wrapper = styled.div`
@@ -30,7 +32,6 @@ const Err = styled.p`
   position: relative;
   top: 10px;
 `;
-let directionsService;
 const Button = PrimaryButton.extend`
   padding: 15px 25px 15px 0px;
   flex: 1 17%;
@@ -111,8 +112,6 @@ export default class LocationPickers extends Component {
   handleAdd = () => {
     const { startingPointValue, destinationPointValue } = this.state;
 
-    console.log(startingPointValue, destinationPointValue);
-
     if (startingPointValue && destinationPointValue) {
       let date = new Date();
       this.setState({ err: false, errMessage: "" });
@@ -130,7 +129,8 @@ export default class LocationPickers extends Component {
         } else if (status === "ZERO_RESULTS") {
           this.setState({
             err: true,
-            errMessage: "We couldn't find any routes. Please try again!"
+            errMessage:
+              "Sorry, we couldn't find any driving routes for these locations"
           });
         }
       });
@@ -141,7 +141,13 @@ export default class LocationPickers extends Component {
 
   // svg signature: ({ className,  icon, fill, hoverFill, width, height, style })
   render() {
-    const { startAnim, delayedAnim, err, errMessage } = this.state;
+    const {
+      startAnim,
+      delayedAnim,
+      err,
+      errMessage,
+      userLocation
+    } = this.state;
     return (
       <div>
         {/* Headline needs to be outside the wrapper, because Wrapper is flex parent  */}
@@ -153,7 +159,7 @@ export default class LocationPickers extends Component {
             o: spring(startAnim ? 1 : 0)
           }}
         >
-          {style =>
+          {style => (
             <Headline
               style={{
                 transform: `translateY(${style.y}px)`,
@@ -165,12 +171,11 @@ export default class LocationPickers extends Component {
               <span style={{ letterSpacing: "4px", fontWeight: "800" }}>
                 Real Quick.
               </span>
-            </Headline>}
+            </Headline>
+          )}
         </Motion>
 
-        <Err style={{ opacity: err ? 1 : 0, margin: 0 }}>
-          {errMessage}
-        </Err>
+        <Err style={{ opacity: err ? 1 : 0, margin: 0 }}>{errMessage}</Err>
         <Wrapper>
           {/* STARTING POINT LOCATION FIELD */}
           <Motion
@@ -180,7 +185,7 @@ export default class LocationPickers extends Component {
               o: spring(startAnim ? 1 : 0)
             }}
           >
-            {style =>
+            {style => (
               <LocationField
                 style={{
                   width: "500px",
@@ -190,7 +195,9 @@ export default class LocationPickers extends Component {
                 userAddress={this.props.userAddress}
                 updateValue={this.updateStartingPoint}
                 label="Choose starting point"
-              />}
+                userLocation={userLocation}
+              />
+            )}
           </Motion>
 
           {/* HR  */}
@@ -201,7 +208,7 @@ export default class LocationPickers extends Component {
               o: spring(delayedAnim ? 1 : 0)
             }}
           >
-            {style =>
+            {style => (
               <LocationHr
                 style={{
                   position: "relative",
@@ -211,7 +218,8 @@ export default class LocationPickers extends Component {
                 }}
                 dotsNum="3"
                 childMargin="0 0 0 9px"
-              />}
+              />
+            )}
           </Motion>
 
           {/* DESTINATION POINT */}
@@ -222,7 +230,7 @@ export default class LocationPickers extends Component {
               o: spring(startAnim ? 1 : 0)
             }}
           >
-            {style =>
+            {style => (
               <LocationField
                 style={{
                   width: "500px",
@@ -231,7 +239,9 @@ export default class LocationPickers extends Component {
                 }}
                 updateValue={this.updateDestinationPoint}
                 label="Choose destination"
-              />}
+                userLocation={userLocation}
+              />
+            )}
           </Motion>
 
           {/* ADD ROUTE BUTTON */}
@@ -242,7 +252,7 @@ export default class LocationPickers extends Component {
               o: spring(startAnim ? 1 : 0)
             }}
           >
-            {style =>
+            {style => (
               <Button
                 url={ArrowImg}
                 style={{
@@ -253,7 +263,8 @@ export default class LocationPickers extends Component {
                 onClick={this.handleAdd}
               >
                 GO!
-              </Button>}
+              </Button>
+            )}
           </Motion>
         </Wrapper>
       </div>
@@ -285,6 +296,6 @@ function calcRoute(start, end, cb) {
 
 const handleErrors = response => {
   if (response.status === "ZERO_RESULTS") {
-    return "Sorry, we couldn't find specified route. Please try again!";
+    return "Sorry, we couldn't find any driving routes for these locations";
   }
 };

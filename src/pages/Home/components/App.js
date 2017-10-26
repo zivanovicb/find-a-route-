@@ -3,14 +3,12 @@ import styled from "styled-components";
 import LocationPickers from "./LocationPickers";
 import theme from "../../../theme";
 import Routes from "./Routes";
-import { CSSTransitionGroup } from "react-transition-group"; // ES6
 import "./transitions.css";
 import Headline from "../../../components/Headline";
 import { Motion, spring, presets } from "react-motion";
 import Scroll from "react-scroll"; // Imports all Mixins
-import { scroller } from "react-scroll"; //Imports scroller mixin, can use as scroller.scrollTo()
 import axios from "axios";
-const uuidv4 = require("uuid/v4");
+
 let Element = Scroll.Element;
 const Wrapper = styled.div`margin-top: 50px;`;
 const Container = styled.div`
@@ -62,12 +60,7 @@ export default class App extends Component {
     if (index != -1) {
       copyArr.splice(index, 1);
       this.setState({ routes: copyArr }, () => {
-        console.log("natural state ", this.state, routes);
         localStorage.setItem("routes", JSON.stringify(copyArr));
-        console.log(
-          "local storage",
-          JSON.parse(localStorage.getItem("routes"))
-        );
       });
     }
   };
@@ -99,13 +92,14 @@ export default class App extends Component {
     }
   }
   render() {
-    const { routes, userAddress } = this.state;
+    const { routes, userAddress, userLocation } = this.state;
     return (
       <Wrapper>
         <Container>
           <Element name="app">
             <LocationPickers
               userAddress={userAddress}
+              userLocation={userLocation}
               addRoute={this.addRoute}
             />
             <Motion
@@ -115,7 +109,7 @@ export default class App extends Component {
                 o: spring(routes.length === 0 ? 1 : 0)
               }}
             >
-              {style =>
+              {style => (
                 <Headline
                   style={{
                     opacity: style.o,
@@ -126,7 +120,8 @@ export default class App extends Component {
                   key="1"
                 >
                   No routes yet
-                </Headline>}
+                </Headline>
+              )}
             </Motion>
 
             <Motion
@@ -136,7 +131,7 @@ export default class App extends Component {
                 o: spring(routes.length !== 0 ? 1 : 0)
               }}
             >
-              {style =>
+              {style => (
                 <Headline
                   className="routes-headline"
                   style={{
@@ -148,7 +143,8 @@ export default class App extends Component {
                   key="1"
                 >
                   You asked for
-                </Headline>}
+                </Headline>
+              )}
             </Motion>
 
             <Routes deleteRoute={this.deleteRoute} routes={routes} />

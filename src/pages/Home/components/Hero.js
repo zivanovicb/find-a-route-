@@ -4,7 +4,6 @@ import bg from "../img/bg.jpg";
 import PrimaryButton from "./PrimaryButton";
 import { Motion, spring, presets } from "react-motion";
 import Scroll from "react-scroll"; // Imports all Mixins
-import { scroller } from "react-scroll"; //Imports scroller mixin, can use as scroller.scrollTo()
 
 let Link = Scroll.Link;
 
@@ -94,7 +93,7 @@ class Hero extends Component {
             o: spring(startAnim ? 1 : 0)
           }}
         >
-          {style =>
+          {style => (
             <Content
               style={{
                 opacity: style.o,
@@ -106,7 +105,8 @@ class Hero extends Component {
               <Link to="app" spy={true} smooth={true} duration={500}>
                 <PrimaryButton hoverBg="#f24d58">TRY IT</PrimaryButton>
               </Link>
-            </Content>}
+            </Content>
+          )}
         </Motion>
       </Wrapper>
     );
