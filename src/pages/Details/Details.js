@@ -41,6 +41,7 @@ export default class Details extends Component {
     GoogleMapsLoader.load(google => {
       initialize(google, this.state.obj.route);
     });
+    document.title = "Route details";
   }
 
   deleteRoute = id => {

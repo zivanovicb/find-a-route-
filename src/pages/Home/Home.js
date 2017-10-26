@@ -11,6 +11,7 @@ export default class Home extends Component {
     this.setState({
       scrollNode: node
     });
+  componentDidMount = () => (document.title = "Routes");
   render() {
     return (
       <Wrapper>
