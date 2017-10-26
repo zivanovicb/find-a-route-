@@ -11,20 +11,25 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import Home from "./pages/Home/Home";
 import Details from "./pages/Details/Details";
 
-const Routing = () =>
+const Routing = () => (
   <Router>
     <div>
       <ThemeProvider theme={theme}>
         <MuiThemeProvider>
-          <Route exact path="/" component={Home} />
+          <Route exact path={`${process.env.PUBLIC_URL}/`} component={Home} />
         </MuiThemeProvider>
       </ThemeProvider>
 
       <ThemeProvider theme={theme}>
-        <Route exact path="/route/:id" component={Details} />
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL}/route/:id`}
+          component={Details}
+        />
       </ThemeProvider>
     </div>
-  </Router>;
+  </Router>
+);
 
 ReactDOM.render(<Routing />, document.getElementById("root"));
 registerServiceWorker();
